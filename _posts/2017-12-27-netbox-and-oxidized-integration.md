@@ -2,7 +2,7 @@
 layout: post
 title: NetBox and Oxidized integration
 categories: Networking
-subcategories: Netrok Management
+subcategories: Network Management
 permalink: /netbox-and-oxidized-integration
 ---
 In our company we use [NetBox][1] to manage devices information, such as IP addresses, serial numbers, etc., [Oxidized][2]/GitLab to store device configuration files, Zabbix to monitor everything and Confluence for any other documentation. 
