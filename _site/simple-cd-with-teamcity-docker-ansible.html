@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Простейший CD с использованием TeamCity, Docker и Ansible &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Простейший CD с использованием TeamCity, Docker и Ansible</h1>
+  <span class="post-date">28 Jan 2018</span>
+    <p>На данном примере я первый раз познакомился с TeamCity и создал нечто похожее на настоящий CD (Continious Deployment).
+Все используемые в примере файлы можно найти по данной <a href="https://github.com/Avtandilko/Python-CD">ссылке</a>.</p>
+
+<!---excerpt-break-->
+<p>Начнем с задачи:</p>
+<ol>
+  <li>Есть примитивное приложение, написанное на Python, которое слушает порт 8080 и в ответ возвращает строку “It Works”;</li>
+  <li>Необходимо распространять данное приложение на определенную группу хостов (в примере - localhost) в виде Docker контейнера.</li>
+</ol>
+
+<p>Структура CD следующая:</p>
+<ol>
+  <li>В локальном репозитории создается приложение с названием python-listener.py;</li>
+  <li>Данный код собирается в Docker контейнер при помощи Dockerfile (также находится в репозитории);</li>
+  <li>В том же репозитории создан Ansible playbook для распространения Docker контейнера;</li>
+  <li>После всех произведенных в коде изменений требуется сделать git push origin master для публикации изменений в мастер ветку на GitHub;</li>
+  <li>Для сборки контейнера на агенте и его распространения на необходимые серверы (в примере - localhost) используется TeamCity, который запускает Ansible playbook.</li>
+</ol>
+
+<p>Шаги по установке TeamCity и его агента в Docker контейнер пропущены, как не требующие особых пояснений. В качестве БД для TeamCity я использовал PostgreSQL, запущенную в Docker контейнере на том же хосте.</p>
+
+<p>Описание приложения на Python можно посмотреть <a href="https://aboutnet.net/making-deb-packet-from-Python-file">здесь</a>.</p>
+
+<p>Dockerfile, при помощи которого собирается контейнер имеет следующий вид:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM alpine:latest
+RUN mkdir /etc/python-listener
+RUN apk update
+RUN apk add python
+ADD ./src/default.conf /etc/python-listener/
+ADD ./src/python-listener.py /etc/python-listener/
+CMD ["python", "/etc/python-listener/python-listener.py"]
+EXPOSE 8080
+</code></pre></div></div>
+
+<p>Данный Dockerfile при сборке образа описывает следующее:</p>
+<ol>
+  <li>В качестве базового образа используется легковесный дистрибутив Alpine последней доступной версии;</li>
+  <li>Создается директория /etc/python-listener, в которой будут находиться файлы приложения;</li>
+  <li>Устанавливается python2;</li>
+  <li>С хоста, на котором собирается образ (либо из Git), копируются файл default.conf и код приложения python-listener.py;</li>
+  <li>Приложение запускается;</li>
+  <li>Контейнер слушает порт 8080 (для того, чтобы данный порт был доступен снаружи, при создании контейнера необходимо использовать ключ -p x:8080).</li>
+</ol>
+
+<p>Следующая ступень - Ansible playbook, который распространяет образ. 
+В роли playbook следует отметить следующий момент - используется библиотека docker-py, которая устанавливается в Python virtual environment для того, чтобы случайно не сломать Python на хостах, где происходит поднятие контейнера (метод подсмотрен у коллег). В остальном, playbook использует модуль Ansible docker_container, который описан в документации.</p>
+
+<p>То, ради чего написана эта статья - работа с TeamCity. Стоит учитывать, что на момент написания статьи, автор имеет около часа опыта работы с TeamCity, поэтому используемые методы, вероятно, очень далеки от совершенства (два из трех этапов сборки используют shell).</p>
+
+<p>Логика следующая:</p>
+<ol>
+  <li>Добавляется новый проект Python-CD;</li>
+  <li>В проекте в VCS (Version Control Settings) указывается GitHub репозиторий;</li>
+  <li>Создаются три шага сборки:
+    <ul>
+      <li>Docker build на TeamCity агенте (он был предложен автоматически и заработал без применения каких-либо дополнительных настроек);</li>
+      <li>Push образа с TeamCity агента в Docker Hub (используется command line: <code class="highlighter-rouge">docker login -u avtandilko -p ***** &amp;&amp; docker push avtandilko/python-listener</code>);</li>
+      <li>Deploy образа из Docker Hub с использованием ssh exec (запуск playbook на указанном хосте командой<code class="highlighter-rouge">ansible-playbook /opt/python-listener/deploy-python-listener-container.yml -i hosts</code>).</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Таким образом, после редактирования кода приложения и его push в GitHub достаточно нажать на одну кнопку для того, чтобы контейнер с приложением распространился на все необходимые хосты. При этом, если какой-то шаг окажется неудачным (например, сборка образа) дальнейшие шаги выполняться не будут.</p>
+
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Containers">Containers</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/understanding-and-deploying-cisco-sd-wan">
+            Understanding and Deploying Cisco SD-WAN (BRKRST-2767)
+            <small>28 Dec 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

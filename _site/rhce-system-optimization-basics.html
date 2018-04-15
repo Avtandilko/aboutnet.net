@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      RHCE System Optimization Basics &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">RHCE System Optimization Basics</h1>
+  <span class="post-date">25 Dec 2017</span>
+    <h2 id="contents">Contents</h2>
+<ul>
+  <li><a href="/rhce-system-optimization-basics#procfs">procfs</a></li>
+  <li><a href="/rhce-system-optimization-basics#sysfs">sysfs</a></li>
+  <li><a href="/rhce-system-optimization-basics#Tuned">Tuned</a></li>
+</ul>
+
+<h2 id="procfs-">procfs <a name="procfs"></a></h2>
+
+<p><code class="highlighter-rouge">procfs</code>is a virtual filesystem, usually mounted on<code class="highlighter-rouge">/proc</code>. Contains generic kernel parameters.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mount | <span class="nb">grep </span>proc
+proc on /proc <span class="nb">type </span>proc <span class="o">(</span>rw,nosuid,nodev,noexec,relatime<span class="o">)</span>
+</code></pre></div></div>
+
+<!---excerpt-break-->
+
+<p>Utilities for displaing information like system processes (<code class="highlighter-rouge">top</code>,<code class="highlighter-rouge">ps</code>, etc…) takes data from the<code class="highlighter-rouge">/proc</code>directory, for example,<code class="highlighter-rouge">lscpu</code>use<code class="highlighter-rouge">/proc/cpuinfo</code>file as one of the source.</p>
+
+<p>Wherein data that<code class="highlighter-rouge">/proc</code>contains may not be in human-readable format.</p>
+
+<p>It is worth noting that<code class="highlighter-rouge">/proc</code>contains directories of the form<code class="highlighter-rouge">/proc/&lt;PID&gt;</code>in which there are files with the information about the currently running processes.</p>
+
+<p>For example, output of the<code class="highlighter-rouge">/proc/&lt;PID&gt;/cmdline</code>shows command, by whitch the process was started:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps aux | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nb">grep</span> | <span class="nb">grep </span>nginx
+root      1449  0.0  0.0  46308  1148 ?        Ss   Dec16   0:00 nginx: master process /usr/sbin/nginx <span class="nt">-c</span> /etc/nginx/nginx.conf
+nginx     1451  0.0  0.1  46824  2176 ?        S    Dec16   0:00 nginx: worker process
+
+<span class="nb">cat</span> /proc/1449/cmdline 
+nginx: master process /usr/sbin/nginx <span class="nt">-c</span> /etc/nginx/nginx.conf%  
+</code></pre></div></div>
+
+<p>Usually, user can’t change files in the<code class="highlighter-rouge">/proc</code>directory, permissions of this files are read-only even for root.</p>
+
+<p>One of the exceptions is the<code class="highlighter-rouge">/proc/sys</code>directory. Manual tuning of the kernel parameters is carried out by changing the contents of files in this directory.
+For example,<code class="highlighter-rouge">/proc/sys/net</code>contains settings related to network traffic management.</p>
+
+<p>Example of disabling ipv6 on a running system using<code class="highlighter-rouge">echo</code>command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip addr | <span class="nb">grep </span>inet6 | <span class="nb">wc</span> <span class="nt">-l</span>
+2
+
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /proc/sys/net/ipv6/conf/all/disable_ipv6
+
+ip addr | <span class="nb">grep </span>inet6 | <span class="nb">wc</span> <span class="nt">-l</span>                      
+0
+</code></pre></div></div>
+<p>It’s important, that this way of changing kernel parameters works only while the system is running. Settings won’t be saved after reboot of the system, because<code class="highlighter-rouge">/proc</code>files are computed on request.</p>
+
+<p>Note that it’s not recommended to change kernel optins in the<code class="highlighter-rouge">/proc/sys</code>using text editors. This action may violate the integrity of the file.</p>
+
+<p>Another way to change kernel parameters is the<code class="highlighter-rouge">sysctl</code>utility. An example<code class="highlighter-rouge">sysctl</code>output of all parameters that can be changed:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sysctl <span class="nt">-a</span> 
+</code></pre></div></div>
+<p>Example of enabling ipv6 on a running system using<code class="highlighter-rouge">sysctl</code>:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip addr | <span class="nb">grep </span>inet6 | <span class="nb">wc</span> <span class="nt">-l</span>
+0
+
+sysctl <span class="nt">-w</span> net.ipv6.conf.all.disable_ipv6<span class="o">=</span>0  
+net.ipv6.conf.all.disable_ipv6 <span class="o">=</span> 0
+
+ip addr | <span class="nb">grep </span>inet6 | <span class="nb">wc</span> <span class="nt">-l</span>
+2
+</code></pre></div></div>
+<p>For a permanent effect, it need to specify parameters to be changed in<code class="highlighter-rouge">/etc/sysctl.conf</code>(symlink to<code class="highlighter-rouge">/etc/sysctl.d/99-sysctl.conf</code>) or in one of the following directories:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/sysctl.d/
+/usr/lib/sysctl.d/
+/run/sysctl.d/
+</code></pre></div></div>
+<p>The<code class="highlighter-rouge">sysctl</code>command with<code class="highlighter-rouge">-p</code>key can be used to immediately apply the contents of all listed files.</p>
+
+<h2 id="sysfs-">sysfs <a name="sysfs"></a></h2>
+
+<p><code class="highlighter-rouge">sysfs</code>is a virtual filesystem, usually mounted on<code class="highlighter-rouge">/sys</code>. Contains symbolic links to hardware related parameters. Doesn’t have it’s own<code class="highlighter-rouge">sysctl</code>. Sub filesystems are also mounted on<code class="highlighter-rouge">/sys/*</code>.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mount | <span class="nb">grep </span>sys 
+sysfs on /sys <span class="nb">type </span>sysfs <span class="o">(</span>rw,nosuid,nodev,noexec,relatime<span class="o">)</span>
+securityfs on /sys/kernel/security <span class="nb">type </span>securityfs <span class="o">(</span>rw,nosuid,nodev,noexec,relatime<span class="o">)</span>
+tmpfs on /sys/fs/cgroup <span class="nb">type </span>tmpfs <span class="o">(</span>ro,nosuid,nodev,noexec,mode<span class="o">=</span>755<span class="o">)</span>
+cgroup on /sys/fs/cgroup/systemd <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,xattr,release_agent<span class="o">=</span>/usr/lib/systemd/systemd-cgroups-agent,name<span class="o">=</span>systemd<span class="o">)</span>
+pstore on /sys/fs/pstore <span class="nb">type </span>pstore <span class="o">(</span>rw,nosuid,nodev,noexec,relatime<span class="o">)</span>
+cgroup on /sys/fs/cgroup/devices <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,devices<span class="o">)</span>
+cgroup on /sys/fs/cgroup/net_cls,net_prio <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,net_prio,net_cls<span class="o">)</span>
+cgroup on /sys/fs/cgroup/cpu,cpuacct <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,cpuacct,cpu<span class="o">)</span>
+cgroup on /sys/fs/cgroup/memory <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,memory<span class="o">)</span>
+cgroup on /sys/fs/cgroup/pids <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,pids<span class="o">)</span>
+cgroup on /sys/fs/cgroup/perf_event <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,perf_event<span class="o">)</span>
+cgroup on /sys/fs/cgroup/hugetlb <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,hugetlb<span class="o">)</span>
+cgroup on /sys/fs/cgroup/cpuset <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,cpuset<span class="o">)</span>
+cgroup on /sys/fs/cgroup/blkio <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,blkio<span class="o">)</span>
+cgroup on /sys/fs/cgroup/freezer <span class="nb">type </span>cgroup <span class="o">(</span>rw,nosuid,nodev,noexec,relatime,freezer<span class="o">)</span>
+configfs on /sys/kernel/config <span class="nb">type </span>configfs <span class="o">(</span>rw,relatime<span class="o">)</span>
+systemd-1 on /proc/sys/fs/binfmt_misc <span class="nb">type </span>autofs <span class="o">(</span>rw,relatime,fd<span class="o">=</span>30,pgrp<span class="o">=</span>1,timeout<span class="o">=</span>0,minproto<span class="o">=</span>5,maxproto<span class="o">=</span>5,direct,pipe_ino<span class="o">=</span>11284<span class="o">)</span>
+debugfs on /sys/kernel/debug <span class="nb">type </span>debugfs <span class="o">(</span>rw,relatime<span class="o">)</span>
+</code></pre></div></div>
+<p>Example of tuning hardware related parameters through<code class="highlighter-rouge">/sys</code>(disabling CPU):</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lscpu | <span class="nb">grep</span> <span class="s1">'CPU(s)'</span>
+CPU<span class="o">(</span>s<span class="o">)</span>:                8
+On-line CPU<span class="o">(</span>s<span class="o">)</span> list:   0-7
+
+<span class="nb">ls</span> /sys/devices/system/cpu/ | <span class="nb">grep </span>cpu
+cpu0
+cpu1
+cpu2
+cpu3
+cpu4
+cpu5
+cpu6
+cpu7
+
+<span class="nb">echo </span>0 <span class="o">&gt;</span> /sys/devices/system/cpu/cpu1/online
+
+dmesg | <span class="nb">grep</span> <span class="s1">'CPU 1'</span>
+<span class="o">[</span>764966.775449] smpboot: CPU 1 is now offline
+
+lscpu | <span class="nb">grep</span> <span class="s1">'CPU(s)'</span>
+CPU<span class="o">(</span>s<span class="o">)</span>:                8
+On-line CPU<span class="o">(</span>s<span class="o">)</span> list:   0,2-7
+Off-line CPU<span class="o">(</span>s<span class="o">)</span> list:  1
+NUMA node0 CPU<span class="o">(</span>s<span class="o">)</span>:     0,2-7
+</code></pre></div></div>
+
+<h2 id="tuned-">Tuned <a name="Tuned"></a></h2>
+
+<p>The simplest way to set recommended parameters for a particular usage profile is the<code class="highlighter-rouge">Tuned</code>utility.
+To list all profiles:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tuned-adm list
+</code></pre></div></div>
+<p>All profile settings are in the<code class="highlighter-rouge">/usr/lib/tuned/</code>directory. For example, a desktop<code class="highlighter-rouge">Tuned</code>profile:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /usr/lib/tuned/descktop/tuned.conf
+<span class="c">#</span>
+<span class="c"># tuned configuration</span>
+<span class="c">#</span>
+
+<span class="o">[</span>main]
+<span class="nv">summary</span><span class="o">=</span>Optimize <span class="k">for </span>the desktop use-case
+<span class="nv">include</span><span class="o">=</span>balanced
+
+<span class="o">[</span>sysctl]
+kernel.sched_autogroup_enabled<span class="o">=</span>1
+</code></pre></div></div>
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Linux">Linux</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

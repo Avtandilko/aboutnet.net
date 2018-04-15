@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      OSPF as PE-CE routing protocol &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">OSPF as PE-CE routing protocol</h1>
+  <span class="post-date">03 Oct 2017</span>
+    <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/ospf-as-pe-ce-routing-protocol#Sham-Link">Sham-Link</a></li>
+  <li><a href="/ospf-as-pe-ce-routing-protocol#DN-bit">DN (down) bit</a></li>
+</ul>
+
+<h2 id="sham-link-">Sham-Link <a name="Sham-Link"></a></h2>
+
+<p>Используется при MPLS L3VPN с наличием backdoor канала между PE (между CE).</p>
+
+<!---excerpt-break-->
+
+<p>По умолчанию при использовании OSPF на стыке PE-CE, клиент видит маршруты с другого CE как OSPF IA (RFC 4576/4577):</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CE1#sh ip ospf database summary 10.0.0.6
+            OSPF Router with ID (10.0.0.1) (Process ID 100)
+                Summary Net Link States (Area 0)
+
+  Routing Bit Set on this LSA in topology Base with MTID 0
+  LS age: 1662
+  Options: (No TOS-capability, DC, Downward)
+  LS Type: Summary Links(Network)
+  Link State ID: 10.0.0.6 (summary Network Number)
+  Advertising Router: 10.0.12.2
+  LS Seq Number: 80000001
+  Checksum: 0xF692
+  Length: 28
+  Network Mask: /32
+        MTID: 0         Metric: 11 
+</code></pre></div></div>
+<p>Если между PE организован backdoor канал, не входящий в MPLS облако, и поверх него настроено OSPF соседство в VRF клиента, данный канал по умолчанию будет использоваться для трафика (intra-area маршруты имеют больший приоритет, чем inter-area).</p>
+
+<p>При использовании sham-link между PE строится виртуальный линк в VRF клиента. Таким образом PE устанавливают прямое OSPF соседство и маршрут перестает быть IA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CE1#sh ip ospf database router 10.0.0.6
+            OSPF Router with ID (10.0.0.1) (Process ID 100)
+                Router Link States (Area 0)
+
+  LS age: 1536 (DoNotAge)
+  Options: (No TOS-capability, DC)
+  LS Type: Router Links
+  Link State ID: 10.0.0.6
+  Advertising Router: 10.0.0.6
+  LS Seq Number: 80000004
+  Checksum: 0x86CF
+  Length: 48
+  Number of Links: 2
+    Link connected to: a Stub Network
+     (Link ID) Network/subnet number: 10.0.0.6
+     (Link Data) Network Mask: 255.255.255.255
+      Number of MTID metrics: 0
+       TOS 0 Metrics: 1
+</code></pre></div></div>
+<h2 id="dn-down-bit-">DN (down) bit <a name="DN-bit"></a></h2>
+
+<p>Используется для предотвращения петель при редистрибуции PE-CE (схема с наличием дополнительной OSPF связи между CE). PE выставляет на LSA Type 3 (также Type 5 и Type 7) флаг DN. Если CE получит данный LSA от другого CE по внутреннему OSPF и передаст его “своему” PE, “свой” PE не будет перераспределять его в MP-BGP:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*Aug 15 10:55:23.425: OSPF-100 INTER: Running spf for summaries area 0 
+*Aug 15 10:55:23.425: OSPF-100 INTER: Start processing: type 3, LSID 10.0.0.9, mask 255.255.255.255, 
+*Aug 15 10:55:23.425: OSPF-100 INTER:   adv_rtr 10.0.12.2, age 1697, seq 0x80000001, area 0 
+*Aug 15 10:55:23.425: OSPF-100 INTER: Downward bit set/Non-backbone LSA
+</code></pre></div></div>
+<p>При использовании sham-link между PE DN bit не выставляется, так как PE не использует LSA Type 3:
+<img src="public/ospf-as-pe-ce-routing-protocol_img1.png" alt="img1" width="100%" /></p>
+
+<p>Для LSA Type 5 и Type 7 для данных целей дополнительно используется route tag с указанием на VPN ID:
+<img src="public/ospf-as-pe-ce-routing-protocol_img2.png" alt="img2" width="100%" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*Aug 15 10:55:23.425: OSPF-100 EXTER: Started Building Type 5 External Routes 
+*Aug 15 10:55:23.425: OSPF-100 EXTER: Start processing Type 5 External LSA 10.0.100.2, mask 255.255.255.255
+*Aug 15 10:55:23.425: OSPF-100 EXTER:  adv_rtr 10.0.12.2, age 113, seq 0x80000005, metric 1, metric-type 2, fw-addr 0.0.0.0 
+*Aug 15 10:55:23.425: OSPF-100 EXTER: Tag equals to VPN Tag, ignoring the LSA
+</code></pre></div></div>
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Networking">Networking</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

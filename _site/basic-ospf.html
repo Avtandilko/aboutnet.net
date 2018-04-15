@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Basic OSPF &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Basic OSPF</h1>
+  <span class="post-date">03 Oct 2017</span>
+    <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/basic-ospf#типы-пакетов-OSPF">Типы пакетов OSPF</a></li>
+  <li><a href="/basic-ospf#типы-LSA">Типы LSA</a></li>
+  <li><a href="/basic-ospf#типы-area">Типы area</a></li>
+</ul>
+
+<p>OSPF - Link-State протокол маршрутизации (для inter-area характерно поведение Distance Vector протоколов).</p>
+
+<p>Использует <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">алгоритм Дейкстры</a> для поиска кратчайшего пути к вершинам графа от исходной вершины (от маршрутизатора, совершающего расчет, к остальным маршрутизаторам, участвующим в процессе OSPF).</p>
+
+<p>Основной RFC по OSPFv2 - <a href="https://tools.ietf.org/html/rfc2328">RFC 2328</a>.</p>
+
+<h2 id="типы-пакетов-ospf-">Типы пакетов OSPF <a name="типы-пакетов-OSPF"></a></h2>
+
+<p>Существует 5 типов пакетов OSPF:</p>
+
+<ul>
+  <li>Hello</li>
+  <li>Database Description</li>
+  <li>Link State Request</li>
+  <li>Link State Update</li>
+  <li>Link State Acknowledgment</li>
+</ul>
+
+<!---excerpt-break-->
+
+<p>Общий заголовок для всех типов пакетов:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Version #   |     Type      |         Packet length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Router ID                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Area ID                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Checksum            |             AuType            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Authentication                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Authentication                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre></div></div>
+
+<h3 id="hello">Hello</h3>
+
+<p>Пакет, периодически рассылающийся через все интерфейсы для установления и поддержки отношений соседства. Период рассылки устанавливается параметром HelloInterval.</p>
+
+<h3 id="database-description-dbd">Database Description (DBD)</h3>
+
+<p>Пакет, содержащий описание LSDB маршрутизаторов. Первый DBD пакет отправляется master маршрутизатором, в ответ от slave маршрутизатора приходит DBD с аналогичным sequence number, расцениваемый как acknowledge.</p>
+
+<h3 id="link-state-request-lsr">Link State Request (LSR)</h3>
+
+<p>Пакет используется после синхронизации LSDB между маршрутизаторами для запроса отдельных LSA.</p>
+
+<h3 id="link-state-update-lsu">Link State Update (LSU)</h3>
+
+<p>Пакеты подобного типа используются для ответа на LSR (unicast destination), либо для распространения новых LSA (224.0.0.5 multicast destination). Содержат полное описание LSA.</p>
+
+<h3 id="link-state-acknowledge-lsack">Link State Acknowledge (LSAck)</h3>
+
+<p>LSAck отправляются в качестве подтверждения для полученных LSA (LSU). Существует два типа LSAck:</p>
+
+<ol>
+  <li>Пакеты отправляются сразу после получения LSU на unicast адрес отправителя;</li>
+  <li>Пакеты отправляются с некоторой задержкой на multicast адрес.</li>
+</ol>
+
+<h2 id="типы-lsa-link-state-advertisement-">Типы LSA (Link-State Advertisement) <a name="типы-LSA"></a></h2>
+
+<h3 id="lsa-type-1">LSA Type 1</h3>
+
+<p>Router-LSAs - описывают набор интерфейсов каждого маршрутизатора в area. Распространяются только внутри area. Также содержат описание роли маршрутизатора:</p>
+
+<ul>
+  <li>Bit V установлен - маршрутизатор терминирует Virtual-Links, для которых area, где сгенерирован LSA, выступает в качестве транзитной;</li>
+  <li>Bit E установлен - ASBR;</li>
+  <li>Bit B установлен - ABR.
+<img src="public/basic-ospf-img1.png" alt="basic-ospf-img1" width="70%" /></li>
+</ul>
+
+<p>Таблица возможных типов Link ID (<a href="https://tools.ietf.org/html/rfc2328#page-128">RFC 2328</a>):</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Link type   Description       Link ID
+__________________________________________________
+1           Point-to-point    Neighbor Router ID
+            link
+2           Link to transit   Interface address of
+            network           Designated Router
+3           Link to stub      IP network number
+            network
+
+4           Virtual link      Neighbor Router ID
+</code></pre></div></div>
+
+<p>Link-State ID для LSA Type 1 - Router ID.</p>
+
+<p>Пример Router-LSA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS1#sh ip ospf database router 10.0.0.1
+
+OSPF Router with ID (10.0.0.1) (Process ID 1)
+
+Router Link States (Area 0)
+
+LS age: 533
+ Options: (No TOS-capability, DC)
+ LS Type: Router Links
+ Link State ID: 10.0.0.1
+ Advertising Router: 10.0.0.1
+ LS Seq Number: 80000004
+ Checksum: 0xB5FD
+ Length: 60
+ Number of Links: 3
+
+Link connected to: a Stub Network
+ (Link ID) Network/subnet number: 10.0.0.1
+ (Link Data) Network Mask: 255.255.255.255
+ Number of MTID metrics: 0
+ TOS 0 Metrics: 1
+
+Link connected to: a Transit Network
+ (Link ID) Designated Router address: 10.1.2.1
+ (Link Data) Router Interface address: 10.1.2.1
+ Number of MTID metrics: 0
+ TOS 0 Metrics: 1
+
+Link connected to: a Transit Network
+ (Link ID) Designated Router address: 10.1.3.1
+ (Link Data) Router Interface address: 10.1.3.1
+ Number of MTID metrics: 0
+ TOS 0 Metrics: 1
+</code></pre></div></div>
+<p>LSA Type 1 в дампе пакета LS Update:
+<img src="public/basic-ospf-img3.png" alt="basic-ospf-img3" width="70%" /></p>
+
+<h3 id="lsa-type-2">LSA Type 2</h3>
+
+<p>Network-LSAs - содержат описание маршрутизаторов, присоединенных к определенной сети. Рассылаются DR внутри area в broadcast и NBMA сетях. Генерируются для каждой транзитной (Type 2 в Router-LSA) сети.</p>
+
+<p>Link-State ID для LSA Type 2 - адрес DR.</p>
+
+<p>Пример Network-LSA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS2#sh ip ospf database network 10.2.3.3
+
+OSPF Router with ID (10.0.0.2) (Process ID 1)
+
+Net Link States (Area 0)
+
+LS age: 68
+ Options: (No TOS-capability, DC)
+ LS Type: Network Links
+ Link State ID: 10.2.3.3 (address of Designated Router)
+ Advertising Router: 10.0.0.3
+ LS Seq Number: 80000003
+ Checksum: 0x44BB
+ Length: 32
+ Network Mask: /24
+ Attached Router: 10.0.0.3
+ Attached Router: 10.0.0.2
+</code></pre></div></div>
+<p>LSA Type 2 в дампе пакета LS Update:
+<img src="public/basic-ospf-img4.png" alt="basic-ospf-img4" width="70%" /></p>
+
+<h3 id="lsa-type-3">LSA Type 3</h3>
+
+<p>Summary-LSAs - содержат описание маршрутов в другие area. Рассылаются ABR внутри area. В backbone area с ABR анонсируются только intra-area маршруты, в non-backbone area с ABR анонсируются как intra-area, так и inter-area маршруты.</p>
+
+<p>При получении LSA Type 3 маршрутизатором, алгоритм SPF не запускается, стоимость маршрута указанного в LSA добавляется к стоимости маршрута до ABR.</p>
+
+<p>Link-State ID для LSA Type 3 - адрес сети, описанной в LSA.</p>
+
+<p>Пример Summary-LSA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS1#sh ip ospf database summary 10.0.0.6
+
+OSPF Router with ID (10.0.0.1) (Process ID 1)
+
+Summary Net Link States (Area 0)
+
+LS age: 44
+ Options: (No TOS-capability, DC, Upward)
+ LS Type: Summary Links(Network)
+ Link State ID: 10.0.0.6 (summary Network Number)
+ Advertising Router: 10.0.0.2
+ LS Seq Number: 80000001
+ Checksum: 0x78A6
+ Length: 28
+ Network Mask: /32
+ MTID: 0 Metric: 2
+</code></pre></div></div>
+<p>LSA Type 3 в дампе пакета LS Update:
+<img src="public/basic-ospf-img5.png" alt="basic-ospf-img5" width="70%" /></p>
+
+<h3 id="lsa-type-4">LSA Type 4</h3>
+
+<p>ASBR-summary-LSAs - содержат адрес ASBR, находящегося в другой area. Рассылаются ABR внутри area.</p>
+
+<p>Link-State ID для LSA Type 4 - router ID описанного в LSA ASBR.</p>
+
+<p>Пример ASBR-summary-LSA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS1#sh ip ospf data asbr-summary 100.0.0.7
+
+OSPF Router with ID (10.0.0.1) (Process ID 1)
+
+Summary ASB Link States (Area 0)
+
+LS age: 64
+ Options: (No TOS-capability, DC, Upward)
+ LS Type: Summary Links(AS Boundary Router)
+ Link State ID: 100.0.0.7 (AS Boundary Router address)
+ Advertising Router: 10.0.0.2
+ LS Seq Number: 80000001
+ Checksum: 0xC9F8
+ Length: 28
+ Network Mask: /0
+ MTID: 0 Metric: 2
+</code></pre></div></div>
+<p>LSA Type 4 в дампе пакета LS Update:
+<img src="public/basic-ospf-img6.png" alt="basic-ospf-img6" width="70%" /></p>
+
+<h3 id="lsa-type-5">LSA Type 5</h3>
+
+<p>AS-external-LSAs - содержат описание маршрутов, внешних по отношению к автономной системе (домену OSPF). Рассылаются ASBR по всей автономной системе (домену OSPF), исключая stub area’s. Также содержит следующие атрибуты:</p>
+
+<p><strong>External Type Bit</strong> - определяет тип external маршрута. Если бит не установлен - маршрут имеет тип E1, и к стоимости перераспределения прибавляется стоимость каналов до ASBR. Если бит установлен - маршрут имеет тип E2 и учитывается только стоимость перераспределения.</p>
+
+<p>Маршрут типа E1 при прочих равных (метрика может быть различной) имеет больший приоритет, чем маршрут типа E2. Если у маршрутизатора есть два одинаковых E2 маршрута от разных ASBR, в выборе лучшего будет учитываться метрика до самих ASBR.</p>
+
+<p><strong>Forwarding Address</strong> - указывает через какой адрес доступен целевой маршрут. В случае, если данный маршрут доступен через самого ASBR в поле Forwarding Address указывается значение 0.0.0.0.</p>
+
+<p>Отличный от 0.0.0.0 Forwarding Address должен находиться в пределах автономной системы (домена OSPF).</p>
+
+<p>Link-State ID для LSA Type 5 - адрес сети, описанной в LSA.</p>
+
+<p>Пример AS-external-LSAs:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS1#sh ip ospf database external 100.0.0.7
+
+OSPF Router with ID (10.0.0.1) (Process ID 1)
+
+Type-5 AS External Link States
+
+LS age: 245
+ Options: (No TOS-capability, DC, Upward)
+ LS Type: AS External Link
+ Link State ID: 100.0.0.7 (External Network Number )
+ Advertising Router: 100.0.0.7
+ LS Seq Number: 80000002
+ Checksum: 0xD4F3
+ Length: 36
+ Network Mask: /32
+ Metric Type: 2 (Larger than any link state path)
+ MTID: 0 
+ Metric: 20 
+ Forward Address: 0.0.0.0
+ External Route Tag: 0
+</code></pre></div></div>
+<p>LSA Type 5 в дампе пакета LS Update:
+<img src="public/basic-ospf-img7.png" alt="basic-ospf-img7" width="70%" /></p>
+
+<h3 id="lsa-type-7">LSA Type 7</h3>
+
+<p>NSSA-external-LSAs. Описаны в <a href="https://tools.ietf.org/html/rfc3101">RFC 3101</a>. Содержат информацию о внешних маршрутах с ASBR, расположенного в NSSA. Рассылаются ASBR в пределах NSSA.</p>
+
+<p>На ABR, граничащем с NSSA, происходит трансформация LSA Type 7 -&gt; LSA Type 5. Маршрут по умолчанию, при его анонсе с ABR в NSSA, также имеет Type 7.</p>
+
+<p>Следует учитывать, что ABR в NSSA не генерируют Type 4 LSA для NSSA ASBR, так как LSA Type 7 не распространяются за пределы NSSA.</p>
+
+<p>Таким образом, для того, чтобы ASBR в NSSA был доступен из других area, поле Forwarding Address в LSA Type 7 должно быть не равным 0.0.0.0 (может быть 0.0.0.0, если P-bit не выставлен). ABR копирует значение данного поля из LSA Type 7 в LSA Type 5 (если Forwarding Adress равен 0.0.0.0, трансляции LSA Type 7 -&gt; LSA Type 5 не происходит).</p>
+
+<p>LSA Type 7 содержит следующую дополнительную информацию:</p>
+
+<ul>
+  <li>P-bit (Propagate) - указывает на то, должен ли LSA Type 7 быть преобразован на ABR в LSA Type 5 и распространен в остальные area.</li>
+</ul>
+
+<p>Пример NSSA-external-LSA:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vIOS1#sh ip ospf database nssa-external 100.0.0.10
+
+OSPF Router with ID (10.0.0.1) (Process ID 1)
+
+Type-7 AS External Link States (Area 1910)
+
+LS age: 464
+ Options: (No TOS-capability, Type 7/5 translation, DC, Upward)
+ LS Type: AS External Link
+ Link State ID: 100.0.0.10 (External Network Number )
+ Advertising Router: 100.0.0.10
+ LS Seq Number: 80000001
+ Checksum: 0xD98
+ Length: 36
+ Network Mask: /32
+ Metric Type: 2 (Larger than any link state path)
+ MTID: 0 
+ Metric: 20 
+ Forward Address: 10.0.0.10
+ External Route Tag: 0
+</code></pre></div></div>
+<p>LSA Type 7 в дампе пакета LS Update:
+<img src="public/basic-ospf-img8.png" alt="basic-ospf-img8" width="70%" /></p>
+
+<h2 id="типы-area-">Типы area <a name="типы-area"></a></h2>
+
+<h3 id="backbone-area">Backbone area</h3>
+
+<p>Area 0.0.0.0. Все ABR находятся в backbone area. Также она отвечает за пересылку маршрутной информации между non-backbone area. Должна быть логически непрерывной (допускается использование virtual-links).</p>
+
+<h3 id="standard-area">Standard area</h3>
+
+<p>Стандартная area, не являющаяся backbone. При наличии в топологии только одной area - ее номер потенциально может быть любым (так как пересылка информации между area отсутствует).</p>
+
+<h3 id="stub-area">Stub area</h3>
+
+<p>Area, в которую запрещено распространение LSA Type 5. При этом на ABR внутрь area генерируется LSA Type 3 с маршрутом по умолчанию. Принадлежность к stub area должна быть включена на всех маршрутизаторах, входящих в данную area. Не может содержать ASBR. Сообщение при попытке сделать один из маршрутизаторов в stub area ASBR:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%OSPF-4-ASBR_WITHOUT_VALID_AREA: Router is currently an ASBR while having only one area which is a stub area
+</code></pre></div></div>
+<h3 id="totally-stubby-area-cisco-only">Totally stubby area (Cisco only)</h3>
+
+<p>Stub area, в которую не отправляются LSA Type 3 (только LSA с маршрутом 0.0.0.0, сгенерированная на ABR). Принадлежность area к totally stubby указывается на ABR (включение фильтрации LSA Type 3).</p>
+
+<h3 id="not-so-stubby-area-nssa">Not-so-stubby area (NSSA)</h3>
+
+<p>Описана в отдельном <a href="https://tools.ietf.org/html/rfc3101">RFC 3101</a>. Stub-area, в которой может находиться ASBR. Принадлежность к NSSA должна быть включена на всех маршрутизаторах, входящих в данную area.</p>
+
+<h3 id="totally-not-so-stubby-area-totally-nssa">Totally not-so-stubby area (Totally NSSA)</h3>
+
+<p>NSSA, в которую не отправляются LSA Type 3 (только LSA с маршрутом 0.0.0.0, сгенерированная на ABR). Принадлежность area к totally NSSA указывается на ABR (включение фильтрации LSA Type 3).</p>
+
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Networking">Networking</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

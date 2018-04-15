@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      NetBox and Oxidized integration &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">NetBox and Oxidized integration</h1>
+  <span class="post-date">27 Dec 2017</span>
+    <p>In our company we use <a href="https://github.com/digitalocean/netbox">NetBox</a> to manage devices information, such as IP addresses, serial numbers, etc., <a href="https://github.com/ytti/oxidized">Oxidized</a>/GitLab to store device configuration files, Zabbix to monitor everything and Confluence for any other documentation.</p>
+
+<p>Earlier, when we connected a new device to the network, we needed to manually add it at least to the listed systems.</p>
+
+<p>Fortunately, NetBox has an excellent API (this was one of the criteria by which I chose him), that allows us to automate some routine.</p>
+
+<!---excerpt-break-->
+
+<p>First we grouped all our devices according to their roles. For example, for data center devices it looks like this:
+<img src="public/netbox-and-oxidized-integration1.png" alt="netbox-and-oxidized-integration1" width="50%" />
+For all devices at least the following fields must be filled in:</p>
+<ul>
+  <li><strong>Primary IPv4</strong> (for ssh to device);</li>
+  <li><strong>Platform</strong> (to use correct library in Oxidized);</li>
+  <li><strong>Status</strong> (we need to store configuration files only from the Active devices);</li>
+  <li><strong>Custom Field: Authorization Type</strong> (some of devices have only local credentials and can not be managed with TACACS+);</li>
+  <li><strong>Custom Field: Web Only</strong> (some of devices are managed only through the web interface).</li>
+</ul>
+
+<p>Then I wrote my own <a href="https://github.com/Avtandilko/NetBoxPython/blob/master/NetBoxPython.py">python library</a> to work with the NetBox API (mainly for education purposes).</p>
+
+<p>To export devices inventory from NetBox I also wrote the <a href="https://github.com/Avtandilko/NetBoxPython/blob/master/NetBoxToOxidizedExport.py">separate script</a>.
+It filters out unsuitable device types (for example, Cisco FEX, which managed from the N5k core switches, or APC UPS) and forms two files:</p>
+<ul>
+  <li>Inventory file in CSV format;</li>
+  <li>/etc/hosts file to locally map hostnames and IP addresses.</li>
+</ul>
+
+<p>Example of the line in inventory file:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dc-br01-1:ios-xe:lan/dc-br
+</code></pre></div></div>
+<p>In Oxidized configuration file we have the next settings:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;output omitted&gt;
+input:
+  default: ssh
+  debug: false
+  ssh:
+    secure: false
+
+output:
+  default: file
+  file:
+    directory: /opt/oxidized/group
+
+source:
+  default: csv
+  csv:
+    file: /opt/oxidized/inventory
+    delimiter: !ruby/regexp /:/
+    gpg: false
+    gpg_password: password
+    map:
+      name: 0
+      model: 1
+      group: 2
+
+model_map:
+  ios-xe: ios
+  nx-os: nxos
+
+hooks:
+  node_failed:
+    type: exec
+    events: [node_fail]
+    cmd: echo Failed to get configuration from $OX_NODE_NAME - $OX_NODE_IP via SSH | mutt -s "[ALERT] Connection to $OX_NODE_NAME via SSH failed" noc@site.ru -e "my_hdr From:oxidized@site.ru"
+</code></pre></div></div>
+<p>So when Oxidized getting configuration of devices listed in the inventory file, it creates the following directories, each containing the corresponding files:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tree <span class="nt">-L</span> 1 /opt/oxidized/lan
+/opt/oxidized/lan
+├── dc-bcsw
+├── dc-br
+├── dc-csw
+├── dc-fw
+├── dc-msw
+├── dc-wlc 
+&lt;output omitted&gt;
+</code></pre></div></div>
+<p>Crontab on the Oxidized server contains the following lines:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>01 11 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>     python3 /mnt/python-scripts/NetBoxPython/NetBoxToOxidizedExport.py
+05 11 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>     systemctl restart oxidized
+01 12 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>     <span class="nb">cd</span> /opt/oxidized/lan <span class="o">&amp;&amp;</span> ./git_autopush
+</code></pre></div></div>
+<p>It means, that inventory file generates every day. 
+Also,<code class="highlighter-rouge">git_autopush</code>is the small and simple bash script, that automatically push all changes to GitLab for easy viewing and daily e-mails to NOC team.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /opt/oxidized/lan/git_autopush 
+git add <span class="nb">.</span> <span class="nt">-A</span>
+<span class="nv">curtime</span><span class="o">=</span><span class="sb">`</span><span class="nb">date</span><span class="sb">`</span>
+git commit <span class="nt">-m</span> <span class="s2">"Automatic Backup @ </span><span class="nv">$curtime</span><span class="s2">"</span>
+git push origin master
+</code></pre></div></div>
+
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Networking">Networking</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

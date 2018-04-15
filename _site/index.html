@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      AboutNet &middot; all about networks
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/prom-interfaces-exporter">
+        Prometheus interfaces exporter
+      </a>
+    </h1>
+
+    <span class="post-date">01 Apr 2018</span>
+
+
+    <p class="excerpt">
+      <p>Для обучающих и тестовых целей я написал exporter для Prometheus, который возвращает состояние сетевых интерфейсов хоста.
+Данный exporter может быть запущен как в Docker контейнере, так и непосредственно на самом хосте.</p>
+
+<p>Исходный код на <a href="https://github.com/Avtandilko/prom-interfaces-exporter">GitHub</a></p>
+
+
+    </p>
+    
+    
+       <a href="/prom-interfaces-exporter"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/basics-of-postgresql">
+        Basics Of PostgreSQL
+      </a>
+    </h1>
+
+    <span class="post-date">16 Feb 2018</span>
+
+
+    <p class="excerpt">
+      <p>Часть “Архитектура PostgreSQL” является конспектом <a href="https://www.youtube.com/playlist?list=PLaFqU3KCWw6KzGwUubZm-9-vKsi6vh5qC">лекций Postgres Professional</a>.</p>
+
+<h1 id="архитектура-postgresql">Архитектура PostgreSQL</h1>
+
+<p>Изначально при старте PostgreSQL запускается процесс postmaster. Он:</p>
+<ol>
+  <li>Создает структуры в памяти, которые будут использоваться другими процессами;</li>
+  <li>Создает все остальные процессы (fork) и управляет ими (перезапуск и т.д.);</li>
+  <li>Слушает входящие соединения и на каждого клиента создает отдельный серверный процесс postgres.</li>
+</ol>
+
+
+    </p>
+    
+    
+       <a href="/basics-of-postgresql"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/simple-cd-with-teamcity-docker-ansible">
+        Простейший CD с использованием TeamCity, Docker и Ansible
+      </a>
+    </h1>
+
+    <span class="post-date">28 Jan 2018</span>
+
+
+    <p class="excerpt">
+      <p>На данном примере я первый раз познакомился с TeamCity и создал нечто похожее на настоящий CD (Continious Deployment).
+Все используемые в примере файлы можно найти по данной <a href="https://github.com/Avtandilko/Python-CD">ссылке</a>.</p>
+
+
+    </p>
+    
+    
+       <a href="/simple-cd-with-teamcity-docker-ansible"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/understanding-and-deploying-cisco-sd-wan">
+        Understanding and Deploying Cisco SD-WAN (BRKRST-2767)
+      </a>
+    </h1>
+
+    <span class="post-date">28 Dec 2017</span>
+
+
+    <p class="excerpt">
+      <h2 id="device-roles">Device roles</h2>
+
+<ul>
+  <li>vManage - interface for login to the system, configure, monitor and troubleshoot it;</li>
+  <li>vSmart Controllers - brains of the operation. Policies configured on vManage pushed down to vSmart Controllers;</li>
+  <li>vBond - tool for ZTP, it instruct routers how to join the network;</li>
+  <li>On-Site routers (<a href="http://viptela.com/vedge-cloud-datasheet/">vEdge</a> or Cisco ASR/ISR 1k/4k in 2018).</li>
+</ul>
+
+<h2 id="concepts">Concepts</h2>
+<p>Overlay Management Protocol (OMP) - TCP based control protocol, creates a peering relationships between vEdge routers and vSmart Controllers over the TLS/DTLS tunnels and used to exchange policies and routes.</p>
+
+<p>At the same time BFD used to provide health checks of the network (DSCP CS6 now and different DSCP values to simulate specific protocols in future implementations).</p>
+
+<p>Transport Locators (TLOCs) - identifiers of vEdge routers and vSmart Controllers.</p>
+
+
+    </p>
+    
+    
+       <a href="/understanding-and-deploying-cisco-sd-wan"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/netbox-and-oxidized-integration">
+        NetBox and Oxidized integration
+      </a>
+    </h1>
+
+    <span class="post-date">27 Dec 2017</span>
+
+
+    <p class="excerpt">
+      <p>In our company we use <a href="https://github.com/digitalocean/netbox">NetBox</a> to manage devices information, such as IP addresses, serial numbers, etc., <a href="https://github.com/ytti/oxidized">Oxidized</a>/GitLab to store device configuration files, Zabbix to monitor everything and Confluence for any other documentation.</p>
+
+<p>Earlier, when we connected a new device to the network, we needed to manually add it at least to the listed systems.</p>
+
+<p>Fortunately, NetBox has an excellent API (this was one of the criteria by which I chose him), that allows us to automate some routine.</p>
+
+
+    </p>
+    
+    
+       <a href="/netbox-and-oxidized-integration"><b>Read more</b></a>
+    
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page2">Older</a>
+  
+  
+    <span class="pagination-item newer">Newer</span>
+  
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      SQL Basics &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">SQL Basics</h1>
+  <span class="post-date">03 Nov 2017</span>
+    <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/sql-basics#Манипуляции с таблицами">Манипуляции с таблицами</a></li>
+  <li><a href="/sql-basics#Запросы к базе данных">Запросы к базе данных</a></li>
+  <li><a href="/sql-basics#Aggregate Functions">Aggregate Functions</a></li>
+  <li><a href="/sql-basics#Связь нескольких таблиц в базе данных">Связь нескольких таблиц в базе данных</a></li>
+</ul>
+
+<p>Конспект курса Learn SQL с ресурса <a href="https://www.codecademy.com/learn/learn-sql">codeacademy.com</a>. Во всех примерах используется синтаксис SQLite.</p>
+
+<p>Реляционные базы данных - базы данных, организованные в виде одной или нескольких таблиц. 
+Таблица - определенный набор данных. Таблицы состоят из строк и столбцов (полей и записей).</p>
+
+<!---excerpt-break-->
+
+<h2 id="манипуляции-с-таблицами-">Манипуляции с таблицами <a name="Манипуляции с таблицами"></a></h2>
+<p>Пример создания таблицы:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">table_name</span> <span class="p">(</span>
+    <span class="n">column_1</span> <span class="n">data_type</span><span class="p">,</span> 
+    <span class="n">column_2</span> <span class="n">data_type</span><span class="p">,</span> 
+    <span class="n">column_3</span> <span class="n">data_type</span>
+  <span class="p">);</span>
+</code></pre></div></div>
+<p>Пример добавления данных в таблицу:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="k">table_name</span> <span class="p">(</span><span class="n">column_1</span><span class="p">,</span> <span class="n">column_2</span><span class="p">,</span> <span class="n">column_2</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">value_1</span><span class="p">,</span> <span class="n">value_2</span><span class="p">,</span> <span class="n">value_3</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="k">table_name</span> <span class="p">(</span><span class="n">column_2</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">value_2</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Примеры запроса значений из таблицы:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">table_name</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="n">column_1</span> <span class="k">FROM</span> <span class="k">table_name</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Пример добавления столбца в таблицу:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span> 
+<span class="k">ADD</span> <span class="k">COLUMN</span> <span class="n">column_4</span> <span class="k">TYPE</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Пример удаления столбца из таблицы:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span> 
+<span class="k">DROP</span> <span class="k">COLUMN</span> <span class="n">column_4</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Пример изменения записи в таблице:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="k">table_name</span>
+<span class="k">SET</span> <span class="n">column_2</span> <span class="o">=</span> <span class="n">value_2</span>
+<span class="k">WHERE</span> <span class="n">column_1</span> <span class="o">=</span> <span class="n">value_1</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Пример удаления записи в таблице:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DELETE</span> <span class="k">FROM</span> <span class="k">table_name</span> <span class="k">WHERE</span> <span class="n">column_1</span><span class="o">=</span><span class="n">value_1</span><span class="p">;</span>
+</code></pre></div></div>
+<h3 id="constraints">Constraints</h3>
+<ul>
+  <li><code class="highlighter-rouge">PRIMARY KEY</code>- уникально идентифицирует каждую запись в таблице. Таблица может содержать только один столбец, использующийся как <code class="highlighter-rouge">PRIMARY KEY</code>;</li>
+  <li><code class="highlighter-rouge">UNIQUE</code>- схож с <code class="highlighter-rouge">PRIMARY KEY</code>, с тем отличием, что в таблице может быть несколько столбцов с уникальными значениями (ключевым словом <code class="highlighter-rouge">UNIQUE</code>);</li>
+  <li><code class="highlighter-rouge">NOT NULL</code>- указатель на то, что каждая запись должна иметь значение в данном столбце. Записи без значения в таблицу вставлены не будут;</li>
+  <li><code class="highlighter-rouge">DEFAULT</code>- указывает на значение по умолчанию поля для записи.</li>
+</ul>
+
+<p>Пример создания таблицы:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">table_name</span> <span class="p">(</span>
+   <span class="n">column_1</span> <span class="n">data_type</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> 
+   <span class="n">column_2</span> <span class="n">data_type</span> <span class="k">UNIQUE</span><span class="p">,</span> 
+   <span class="n">column_3</span> <span class="n">data_type</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+   <span class="n">column_4</span> <span class="n">data_type</span> <span class="k">DEFAULT</span> <span class="n">value_4</span><span class="p">,</span>
+ <span class="p">);</span>
+</code></pre></div></div>
+<h2 id="запросы-к-базе-данных-">Запросы к базе данных <a name="Запросы к базе данных"></a></h2>
+<ul>
+  <li><code class="highlighter-rouge">SELECT DISTINCT ...</code> - возвращает только уникальные значения из таблицы;</li>
+  <li><code class="highlighter-rouge">SELECT * FROM table_name WHERE condition;</code> - возвращает записи, отвечающие определенному условию;</li>
+  <li><code class="highlighter-rouge">SELECT * FROM table_name WHERE column LIKE pattern;</code> - возвращает записи, удовлетворяющие определенному паттерну;</li>
+  <li><code class="highlighter-rouge">SELECT * FROM table_name WHERE column BETWEEN value_1 AND value_2;</code> - возвращает записи в интервале между указанными значениями;</li>
+  <li><code class="highlighter-rouge">SELECT * FROM table_name ORDER BY column ASC/DESC;</code> - возвращает записи в сортированном виде в порядке возрастания/убывания;</li>
+  <li><code class="highlighter-rouge">SELECT * FROM table_name LIMIT &lt;number&gt;;</code> - возвращает указанное количество записей;</li>
+</ul>
+
+<p>Синтаксис, используемый в LIKE:</p>
+<ul>
+  <li>‘_’ - любой символ;</li>
+  <li>’%’ - любая последовательность символов;</li>
+</ul>
+
+<h2 id="aggregate-functions-">Aggregate Functions <a name="Aggregate Functions"></a></h2>
+<p>Функции, позволяющие проводить манипуляции над набором значений и получать единственный результат</p>
+<ul>
+  <li><code class="highlighter-rouge">COUNT</code>- возвращает количество записей в таблице.</li>
+</ul>
+
+<p>Пример запроса:<code class="highlighter-rouge">SELECT COUNT(*) FROM table_name;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">GROUP BY</code>- группирует результаты запроса по значению одного или нескольких полей.</li>
+</ul>
+
+<p>Пример запроса:<code class="highlighter-rouge">SELECT column_1, COUNT(*) FROM table_name GROUP BY column_1;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">SUM</code>- возвращает сумму всех значений поля (только для INTEGER).</li>
+</ul>
+
+<p>Пример запроса:<code class="highlighter-rouge">SELECT SUM(column_1) FROM table_name;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">MAX</code>- возвращает максимальное значение для поля.</li>
+</ul>
+
+<p>Пример запроса:<code class="highlighter-rouge">SELECT MAX(column_1) FROM table_name;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">MIN</code>- возвращает минимальное значение для поля.</li>
+</ul>
+
+<p>Пример запроса:<code class="highlighter-rouge">SELECT MIN(column_1) FROM table_name;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">AVG</code>- возвращает среднее значение для поля.</li>
+</ul>
+
+<p>Пример запроса:  <code class="highlighter-rouge">SELECT AVG(column_1) FROM table_name;</code></p>
+<ul>
+  <li><code class="highlighter-rouge">ROUND</code>- округляет результаты запроса с указанной точностью.</li>
+</ul>
+
+<p>Пример запроса (2 знака после запятой):  <code class="highlighter-rouge">SELECT ROUND(AVG(column_1), 2) FROM table_name;</code></p>
+
+<h2 id="связь-нескольких-таблиц-в-базе-данных-">Связь нескольких таблиц в базе данных <a name="Связь нескольких таблиц в базе данных"></a></h2>
+
+<ul>
+  <li><code class="highlighter-rouge">FOREIGN KEY</code> - поле таблицы, которое содержит <code class="highlighter-rouge">PRIMARY KEY</code> другой таблицы в базе данных. Могут быть неуникальными в пределах таблицы, либо типа NULL.</li>
+  <li>Cross Join - указание на то, что <code class="highlighter-rouge">FOREIGN KEY</code> одной таблицы является <code class="highlighter-rouge">PRIMARY KEY</code> другой таблицы.</li>
+  <li>Inner Join, <code class="highlighter-rouge">FOREIGN KEY</code> (column_1) из таблицы table_name_1 сопоставляется с <code class="highlighter-rouge">PRIMARY KEY</code> (column_2) таблицы table_name_2:
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">table_name_1</span>
+<span class="k">JOIN</span> <span class="n">table_name_2</span> <span class="k">ON</span> <span class="n">table_name_1</span><span class="p">.</span><span class="n">column_1</span> <span class="o">=</span> <span class="n">table_name_2</span><span class="p">.</span><span class="n">column_2</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">Outer Join</code> - запрос, аналогичный <code class="highlighter-rouge">Inner Join</code>, но выполнение Join Condition необязательно. Пример запроса <code class="highlighter-rouge">Outer Join</code>:
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">table_name_1</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">table_name_2</span> <span class="k">ON</span> <span class="n">table_name_1</span><span class="p">.</span><span class="n">column_name_1</span> <span class="o">=</span> <span class="n">table_name_2</span><span class="p">.</span><span class="n">column_name_2</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">AS</code> (Alias) - ключевое слово, позволяющее переименовать поле таблицы при присоединении. Пример:
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">column_1</span> <span class="k">AS</span> <span class="n">column_2</span> <span class="k">FROM</span> <span class="k">table_name</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">DROP TABLE IF EXISTS</code> - удаление таблицы из базы данных, если таблица существует;</li>
+  <li><code class="highlighter-rouge">CREATE TABLE IF NOT EXISTS</code> - создание таблицы в базе данных, если таблица еще не существует.</li>
+  <li><code class="highlighter-rouge">REFERENCES</code> - указание на зависимость поля одной таблицы от поля другой таблицы. Пример:
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">table_name_1</span><span class="p">(</span>
+  <span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">column_1</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">table_name_2</span><span class="p">(</span><span class="n">column_2</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#SQL">SQL</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111661498-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-111661498-1');
+  </script>
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter45675420 = new Ya.Metrika({
+                      id:45675420,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+  
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+  
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/45675420" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Weave &middot; AboutNet
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="/categories/">Categories</a> 
+    <a class="sidebar-nav-item" href="/about/">About</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+          <h3 class="masthead-title">
+            <a href="/" title="Home">AboutNet</a>
+            <small>all about networks</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Weave</h1>
+  <span class="post-date">02 Oct 2017</span>
+    <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/weave#Установка">Установка</a>
+    <ul>
+      <li><a href="/weave#Weave-Scope">Weave Scope</a></li>
+    </ul>
+  </li>
+  <li><a href="/weave#Описание">Описание</a></li>
+  <li><a href="/weave#Network-Policy">Network Policy</a></li>
+</ul>
+
+<h2 id="установка-">Установка <a name="Установка"></a></h2>
+
+<p>Для версии 1.7.5:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://cloud.weave.works/k8s/net?k8s-version<span class="o">=</span>1.7.5
+<span class="nb">cp </span>net<span class="se">\?</span>k8s-version<span class="se">\=</span>1.7.5 weave-conf-1.7.5.yaml
+weave-conf-1.7.5.yaml
+      containers:
+        - name: weave
+          <span class="nb">env</span>:
+            - name: IPALLOC_RANGE
+              value: 10.0.0.0/16 -&gt; 172.25.64.0/18
+kubectl apply <span class="nt">-f</span> weave-conf-1.7.5.yaml
+</code></pre></div></div>
+<h3 id="weave-scope-">Weave Scope <a name="Weave-Scope"></a></h3>
+
+<p>Графическая среда мониторинга для сетевого модуля Weave. Может работать как в облаке cloud.weave.works так и в локальном k8s.</p>
+
+<p>Установка на локальный k8s:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://cloud.weave.works/k8s/scope.yaml?k8s-version<span class="o">=</span>1.7.5
+<span class="nb">cp </span>scope.yaml?k8s-version<span class="o">=</span>1.7.5 weave-scope-conf-1.7.5.yaml
+    spec:
+      externalIPs:
+        - 10.200.33.12                
+      ports:
+        - name: app  
+          port: 4040
+
+kubectl apply <span class="nt">--namespace</span> kube-system <span class="nt">-f</span> weave-scope-conf-1.7.5.yaml
+</code></pre></div></div>
+<!---excerpt-break-->
+
+<h2 id="описание-">Описание <a name="Описание"></a></h2>
+<p>По умолчанию контейнеры на всех хостах находятся в плоской сети (в примере 172.25.64.0/18). При этом на каждый хост выделяется свой диапазон адресов:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@k8s-vm1 ~]# ip addr | <span class="nb">grep </span>172.25
+    inet 172.25.96.0/18 scope global weave
+<span class="o">[</span>root@k8s-vm2 ~]# ip addr | <span class="nb">grep </span>172.25
+    inet 172.25.120.0/18 scope global weave
+<span class="o">[</span>root@k8s-vm3 ~]# ip addr | <span class="nb">grep </span>172.25
+    inet 172.25.64.1/18 scope global weave
+<span class="o">[</span>root@k8s-vm4 ~]# ip addr | <span class="nb">grep </span>172.25
+    inet 172.25.88.0/18 scope global weave
+</code></pre></div></div>
+<h2 id="network-policy-">Network Policy <a name="Network-Policy"></a></h2>
+
+<p>Управление доступом в weave осуществляется с использованием iptables.</p>
+
+<h3 id="пример-настройки-сетевых-политик">Пример настройки сетевых политик</h3>
+
+<p>Запрет доступа в pod’ы, находящиеся в namespace prod с использованием аннотаций (implicit deny), аннотация в том числе запрещает доступ между pod в одном namespace:</p>
+
+<h4 id="до-применения-аннотации">До применения аннотации</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Chain WEAVE-NPC-DEFAULT <span class="o">(</span>1 references<span class="o">)</span>
+target     prot opt <span class="nb">source               </span>destination
+ACCEPT     all  <span class="nt">--</span>  anywhere             anywhere             match-set weave-z~y01unAQHA]WxHG!ALB<span class="o">)</span>5]<span class="o">}</span>s dst /<span class="k">*</span> DefaultAllow isolation <span class="k">for </span>namespace: prod <span class="k">*</span>/
+</code></pre></div></div>
+<h4 id="запрет-с-использованием-аннотации">Запрет с использованием аннотации</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl annotate ns prod net.beta.kubernetes.io/network-policy='{"ingress":{"isolation":"DefaultDeny"}}'
+</code></pre></div></div>
+<h4 id="удаление-запрета">Удаление запрета</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl annotate ns prod net.beta.kubernetes.io/network-policy-
+</code></pre></div></div>
+<p>Открытие internal доступа для определенного pod в namespace prod с определенного pod в namespace prod (пример для iperf-prod-1):</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">cat prod-net-policy.yaml</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">NetworkPolicy</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">iperf-prod-1-internal-access</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">prod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">podSelector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">iperf-prod-1</span>
+  <span class="na">ingress</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">podSelector</span><span class="pi">:</span>
+            <span class="na">matchLabels</span><span class="pi">:</span>
+              <span class="na">run</span><span class="pi">:</span> <span class="s">iperf-prod-1</span>
+
+<span class="s">kubectl create -f prod-net-policy.yaml</span>
+</code></pre></div></div>
+<p>Новая цепочка в iptables на всех нодах:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Chain WEAVE-NPC-INGRESS <span class="o">(</span>1 references<span class="o">)</span>
+target     prot opt <span class="nb">source               </span>destination         
+ACCEPT     all  <span class="nt">--</span>  anywhere             anywhere             match-set weave-KD98A9:Wl|emmgZ<span class="o">=</span>GX^J2yD<span class="p">;</span>M src match-set weave-KD98A9:Wl|emmgZ<span class="o">=</span>GX^J2yD<span class="p">;</span>M dst /<span class="k">*</span> pods: namespace: prod, selector: <span class="nv">run</span><span class="o">=</span>iperf-prod-1 -&gt; pods: namespace: prod, selector: <span class="nv">run</span><span class="o">=</span>iperf-prod-1 <span class="k">*</span>/
+</code></pre></div></div>
+
+</div>
+
+<div class="post-categories">
+  
+  
+  <b>Categories:</b>
+  <a href="/categories/#Containers">Containers</a>
+  
+  
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/prom-interfaces-exporter">
+            Prometheus interfaces exporter
+            <small>01 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/basics-of-postgresql">
+            Basics Of PostgreSQL
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/simple-cd-with-teamcity-docker-ansible">
+            Простейший CD с использованием TeamCity, Docker и Ansible
+            <small>28 Jan 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+    
+      </div>
+    </div>
+
+  </body>
+
+</html>
