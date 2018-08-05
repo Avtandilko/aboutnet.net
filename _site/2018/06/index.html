@@ -49,7 +49,7 @@
 
   <title>
     
-      Understanding and Deploying Cisco SD-WAN (BRKRST-2767) &middot; AboutNet
+      Monthly archive for 2018/6 &middot; AboutNet
     
   </title>
 
@@ -109,94 +109,17 @@
       </div>
 
       <div class="container content">
-        <div class="post">
-  <h1 class="post-title">Understanding and Deploying Cisco SD-WAN (BRKRST-2767)</h1>
-  <span class="post-date">28 Dec 2017</span>
-    <h2 id="device-roles">Device roles</h2>
-
-<ul>
-  <li>vManage - interface for login to the system, configure, monitor and troubleshoot it;</li>
-  <li>vSmart Controllers - brains of the operation. Policies configured on vManage pushed down to vSmart Controllers;</li>
-  <li>vBond - tool for ZTP, it instruct routers how to join the network;</li>
-  <li>On-Site routers (<a href="http://viptela.com/vedge-cloud-datasheet/">vEdge</a> or Cisco ASR/ISR 1k/4k in 2018).</li>
-</ul>
-
-<h2 id="concepts">Concepts</h2>
-<p>Overlay Management Protocol (OMP) - TCP based control protocol, creates a peering relationships between vEdge routers and vSmart Controllers over the TLS/DTLS tunnels and used to exchange policies and routes.</p>
-
-<p>At the same time BFD used to provide health checks of the network (DSCP CS6 now and different DSCP values to simulate specific protocols in future implementations).</p>
-
-<p>Transport Locators (TLOCs) - identifiers of vEdge routers and vSmart Controllers.</p>
-
-<!---excerpt-break-->
-
-<h2 id="fabric-operation-walk-through">Fabric Operation Walk-Through</h2>
-
-<ol>
-  <li>TLS/DTLS tunnels created between vEdge routers and vSmart Controllers;</li>
-  <li>vEdge routers discover other vEdge routers TLOCs via OMP;</li>
-  <li>vEdge routers build IPSec tunnels with BFD to other vEdge routers;</li>
-</ol>
-
-<h2 id="zero-touch-provisioning">Zero Touch Provisioning</h2>
-
-<ol>
-  <li>vEdge router boots up and send query to ztp.viptela.com;</li>
-  <li>ztp.viptela.com redirects vEdge to corporate orchestartor (vBond);</li>
-  <li>vEdge establishes a connection with vBond, downloads initial configuration from vManage and registered on it;</li>
-</ol>
-
-<h2 id="useful-links">Useful Links</h2>
-<ul>
-  <li><a href="https://www.ciscolive.com/global/on-demand-library/?search=viptela#/session/15064839297820012EYM">Cisco Live Presentation</a></li>
-  <li><a href="https://dcloud-cms.cisco.com/demo/4d-viptela-v1">Cisco dCloud Demo “Cisco 4D SD-WAN (Viptela) v1”</a></li>
-  <li><a href="http://viptela.com/sd-wan/">Viptela official site</a></li>
-</ul>
+        <div class="monthly-archive">
+  <div>
+    <span class="title">Monthly archive for 2018/6</span>
+  </div>
+  <div>
+    <ul>
+      <li><a href="/kubernetes-prometheus-operator"><span>Kubernetes Prometheus Operator</span></a></li>
 
 
-</div>
-
-<div class="post-categories">
-  
-  
-  <b>Categories:</b>
-  <a href="/categories/#Networking">Networking</a>
-  
-  
-</div>
-
-<div class="related">
-  <h2>Related Posts</h2>
-  <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/kubernetes-prometheus-operator">
-            Kubernetes Prometheus Operator
-            <small>19 Jun 2018</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/prom-interfaces-exporter">
-            Prometheus interfaces exporter
-            <small>01 Apr 2018</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/basics-of-postgresql">
-            Basics Of PostgreSQL
-            <small>16 Feb 2018</small>
-          </a>
-        </h3>
-      </li>
-    
-  </ul>
+    </ul>
+  </div>
 </div>
     
       </div>

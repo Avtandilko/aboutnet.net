@@ -4,13 +4,329 @@
  <title>AboutNet</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2018-04-15T12:30:51-04:00</updated>
+ <updated>2018-06-20T18:05:40-04:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Kubernetes Prometheus Operator</title>
+   <link href="http://localhost:4000/kubernetes-prometheus-operator"/>
+   <updated>2018-06-19T00:00:00-04:00</updated>
+   <id>http://localhost:4000/kubernetes-prometheus-operator</id>
+   <content type="html">&lt;h2 id=&quot;содержание&quot;&gt;Содержание&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#установка(helm)&quot;&gt;Установка (helm)&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#предварительные-изменения&quot;&gt;Предварительные изменения&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#установка&quot;&gt;Установка&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#примеры-использования&quot;&gt;Примеры использования&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-своего-dashboard-в-grafana&quot;&gt;Добавление своего dashboard в Grafana&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Добавление custom alerts&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#persistent-storage&quot;&gt;Persistent storage&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Отправка уведомлений&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Ingress&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#мониторинг-сервисов-внутри-pod&quot;&gt;Мониторинг сервисов внутри pod&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#описание&quot;&gt;Описание&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#конфигурации&quot;&gt;Конфигурации&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;В данной статье описано, как установить, обеспечить работоспособность и настроить Prometheus Operator в кластере GCE. Большая часть статьи применима независимо от места развертывания кластера k8s.&lt;/p&gt;
+
+&lt;p&gt;Следует учитывать, что статья написана в процессе ознакомления с Kubernetes и мониторингом кластера, поэтому многие инструкции могут быть неоптимальными, несовместимыми с использованием в production, либо просто некорретными. 
+&lt;!---excerpt-break--&gt;&lt;/p&gt;
+&lt;h2 id=&quot;установка-helm-&quot;&gt;Установка (helm) &lt;a name=&quot;установка(helm)&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;предварительные-изменения-&quot;&gt;Предварительные изменения &lt;a name=&quot;предварительные-изменения&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;1) Отключение ssl для сбора метрик kubelet:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https: false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;2) Изменение порта и url для получения метрик cadvisor:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  - port: http-metrics
+    interval: 15s
+  - port: http-metrics
+    path: /metrics/cadvisor
+    interval: 30s
+    honorLabels: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;3) Изменение репозитория helm для установки kube-prometheus на локальный:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -ie 's/    repository/#    repository/g' helm/kube-prometheus/requirements.yaml
+sed -ie 's/#e2e-repository/repository/g' helm/kube-prometheus/requirements.yaml
+helm dependency update helm/kube-prometheus/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;4) Изменение datasource в Grafana на корректный:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;prometheus-datasource.json: |+
+  {
+    &quot;access&quot;: &quot;proxy&quot;,
+    &quot;basicAuth&quot;: false,
+    &quot;name&quot;: &quot;prometheus&quot;,
+    &quot;type&quot;: &quot;prometheus&quot;,
+    &quot;url&quot;: &quot;http://prometheus:9090&quot;
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;5) Подключение alertmanager к prometheus:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alertingEndpoints:
+   - name: alertmanager
+     namespace: monitoring
+     port: http
+     scheme: http
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;установка-&quot;&gt;Установка &lt;a name=&quot;установка&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/coreos/prometheus-operator.git &amp;amp;&amp;amp; cd prometheus-operator
+
+helm install --name prometheus-operator --set rbacEnable=true --namespace=monitoring helm/prometheus-operator --tls
+helm install --name prometheus --set serviceMonitorsSelector.app=prometheus --set ruleSelector.app=prometheus --namespace=monitoring helm/prometheus --tls
+helm install --name alertmanager --namespace=monitoring helm/alertmanager --tls
+helm install --name grafana --namespace=monitoring helm/grafana --tls
+helm install --name kube-prometheus --namespace=monitoring helm/kube-prometheus --tls
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;примеры-использования-&quot;&gt;Примеры использования &lt;a name=&quot;примеры-использования&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;добавление-своего-dashboard-в-grafana-&quot;&gt;Добавление своего dashboard в Grafana &lt;a name=&quot;добавление-своего-dashboard-в-grafana&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Существует несколько способов добавления dashboard в Grafana. Более правильный описан в документации (helm/grafana/README.md) и подразумевает создание отдельного ConfigMap и вынос custom dashboard’ов в отдельную директорию.&lt;/p&gt;
+
+&lt;p&gt;Более простой способ - скопировать json файл с dashboard, импортированный из Grafana, в директорию helm/grafana/dashboards, обернув его в следующий код (необходимо для работы Grafana Watcher):&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;dashboard&quot;:
+&amp;lt;-- initial code --&amp;gt;,
+      &quot;inputs&quot;: [
+        {
+            &quot;name&quot;: &quot;DS_PROMETHEUS&quot;,
+            &quot;pluginId&quot;: &quot;prometheus&quot;,
+            &quot;type&quot;: &quot;datasource&quot;,
+            &quot;value&quot;: &quot;prometheus&quot;
+        }
+    ],
+    &quot;overwrite&quot;: true
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;добавление-custom-alerts-&quot;&gt;Добавление custom alerts &lt;a name=&quot;добавление-custom-alerts&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Существует несколько способов добавления оповещений. Также в репозиторий включен набор преднастроенных оповещений (contrib/kube-prometheus/manifests/prometheus-rules.yaml)&lt;/p&gt;
+
+&lt;p&gt;Для того, чтобы включились встроенные оповещения, необходимо сделать следующие вещи:&lt;/p&gt;
+
+&lt;p&gt;1) Корректно выставить labels в манифесте, содержащем правила, для того, чтобы подпадать под ruleSelector:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;metadata:
+  labels:
+    prometheus: prometheus
+    role: alert-rules
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;2) Применить манифест:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply -n monitoring -f contrib/kube-prometheus/manifests/prometheus-rules.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;3) Возможно отредактировать конфигурацию самого ruleSelector:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ruleSelector:
+    matchLabels:
+      role: alert-rules
+      prometheus: prometheus
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;4) Обновить конфигурацию prometheus:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm upgrade prometheus helm/prometheus --tls  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Существует другой, более простой способ:&lt;/p&gt;
+
+&lt;p&gt;1) Переопределить в values.yml ruleSelector, например:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rulesSelector: {
+  matchLabels: {
+	role: alert-rules
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;2) Обновить конфигурацию prometheus:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm upgrade prometheus helm/prometheus --tls  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Соответственно, для того, чтобы заработало свое правило оповещения, необходимо создать манифест следующего вида и применить его:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+  name: custom-prometheus-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: custom.rules
+    rules:
+&amp;lt;-- rules --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Пример правила оповещения:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+  name: custom-prometheus-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: custom.rules
+    rules:
+    - alert: KubernetesTooManyRunningPods
+      annotations:
+        message: &quot;Too many running pods on the node `}}.&quot;
+      expr: |
+        kubelet_running_pod_count &amp;gt; 15
+      for: 1m
+      labels:
+        severity: warning
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Пример добавления правила оповещения:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply -n monitoring -f custom/prometheus-rules/custom-prometheus-rules.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;persistent-storage-&quot;&gt;Persistent storage &lt;a name=&quot;persistent-storage&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Рассматривается развертывание с использование своего StorageClass prometheus-ssd-sc (одна зона, ssd, отсутствие репликации).
+Манифест для storageClass:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: prometheus-ssd-sc
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  zone: europe-west3-a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Для того, чтобы подключить данный sc в prometheus, необходимо раскомментировать и заполнить секцию storageSpec в файле values.yaml:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;storageSpec:
+  volumeClaimTemplate:
+    spec:
+      selector:
+        matchLabels:
+          namespace: monitoring
+      accessModes: [ &quot;ReadWriteOnce&quot; ]
+      storageClassName: prometheus-ssd-sc
+      resources:
+        requests:
+          storage: 2Gi
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Работа pv проверена путем удаления prometheus helm release и его последующей установкой. Данные из pv при этом не теряются.&lt;/p&gt;
+
+&lt;p&gt;Время хранения метрик задается в файле /helm/prometheus/values.yaml в переменной retention. По умолчанию prometheus хранит метрики 24 часа.&lt;/p&gt;
+
+&lt;p&gt;Пример графика потребления RAM, разделенного по pod (в период отсутствия метрик helm release prometheus был полностью удален из k8s):
+&lt;img src=&quot;public/kubernetes-prometheus-operator-img0.png&quot; alt=&quot;kubernetes-prometheus-operator-img0&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;отправка-уведомлений-&quot;&gt;Отправка уведомлений &lt;a name=&quot;отправка-уведомлений&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Для отправки уведомлений (в примере - отправка на почту), необходимо привести конфигурацию values.yaml к аналогичному виду:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config:
+  global:
+    resolve_timeout: 5m
+    smtp_smarthost: &amp;lt;smtp-server&amp;gt;
+    smtp_from: &amp;lt;smtp-from&amp;gt;
+    smtp_auth_username: &amp;lt;smtp-username&amp;gt;
+    smtp_auth_password: &amp;lt;smtp-password&amp;gt;
+  route:
+    group_by: ['job']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 12h
+    receiver: &amp;lt;receiver-name&amp;gt;
+  receivers:
+  - name: &amp;lt;receiver-name&amp;gt;
+    email_configs:
+      - to: &amp;lt;target@e-mail.address&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;ingress-&quot;&gt;Ingress &lt;a name=&quot;ingress&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Типовой Ingress для любого сервиса настраивается в файле values.yaml данного сервиса. На примере grafana:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ingress:
+  enabled: true
+  hosts: 
+    - grafana.example.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;мониторинг-сервисов-внутри-pod-&quot;&gt;Мониторинг сервисов внутри pod &lt;a name=&quot;мониторинг-сервисов-внутри-pod&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;описание-&quot;&gt;Описание &lt;a name=&quot;описание&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Задача - получать в prometheus метрики с exporters, запущенных внутри pod. При изменениях prometheus должен автоматически узнавать о них.&lt;/p&gt;
+
+&lt;p&gt;Для демонстрации в namespace custom-ns создан deployment из двух pod с prometheus node-exporter.&lt;/p&gt;
+
+&lt;p&gt;Решается задача при помощи двух сущностей.&lt;/p&gt;
+
+&lt;p&gt;1) Service - связывает конфигурацию pod и ServiceMonitor;&lt;/p&gt;
+
+&lt;p&gt;2) ServiceMonitor - связывает конфигурацию Service и prometheus.&lt;/p&gt;
+
+&lt;p&gt;После настройки данных сущностей, для любого сервиса, находящегося в namespace custom-ns и имеющего метку custom-node-exporter, prometheus будет пытаться забрать метрики с порта 9100 (node-exporter)/&lt;/p&gt;
+
+&lt;p&gt;Пример targets в prometheus:
+&lt;img src=&quot;public/kubernetes-prometheus-operator-img1.png&quot; alt=&quot;kubernetes-prometheus-operator-img1&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;конфигурации-&quot;&gt;Конфигурации &lt;a name=&quot;конфигурации&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-node-exporter-deployment
+spec:
+  selector:
+    matchLabels:
+      app: custom-node-exporter
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: custom-node-exporter
+    spec:
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter
+        ports:
+        - containerPort: 9100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: custom-servicemonitor
+  labels:
+    app: custom-node-exporter
+    prometheus: kube-prometheus
+spec:
+  selector:
+    matchLabels:
+      app: custom-node-exporter
+  namespaceSelector:
+    matchNames:
+      - custom-ns
+  endpoints:
+  - port: custom-metrics
+    path: /metrics
+    interval: 10s
+    honorLabels: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: v1
+kind: Service
+metadata:
+  name: custom-service
+  labels:
+    app: custom-node-exporter
+spec:
+  selector:
+    app: custom-node-exporter
+  ports:
+  - name: custom-metrics
+    protocol: TCP
+    port: 9100
+    targetPort: 9100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Prometheus interfaces exporter</title>

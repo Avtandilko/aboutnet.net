@@ -113,6 +113,48 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/basic-tcp">
+        Basic TCP
+      </a>
+    </h1>
+
+    <span class="post-date">03 Oct 2017</span>
+
+
+    <p class="excerpt">
+      <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/basic-tcp#Терминология">Терминология</a></li>
+  <li><a href="/basic-tcp#Установка-TCP-соединения">Установка TCP соединения</a>
+    <ul>
+      <li><a href="/basic-tcp#3-Way-Handshake">3-Way Handshake</a></li>
+    </ul>
+  </li>
+  <li><a href="/basic-tcp#Создание-сегмента-TCP">Создание сегмента TCP</a></li>
+</ul>
+
+<h2 id="терминология-">Терминология <a name="Терминология"></a></h2>
+
+<p><strong>TCB</strong> - блок памяти, выделенный CPU для обработки информации одной TCP сессии. Содержит информацию о сокете и состоянии сессии;</p>
+
+<p><strong>Socket</strong> - набор src IP, src port, dst IP, dst port;</p>
+
+<p>Возможны два способа создания TCB :</p>
+
+<ul>
+  <li><strong>Active open</strong> - создается на клиенте, когда приложение запрашивает сокет. Далее случайным образом создается Initial Sequence Number (ISN) и отправляется SYN;</li>
+  <li><strong>Passive open</strong> - создается на сервере для дальнейших нужд (“in advance”). В сокете предопределены src IP и src Port (частичный сокет) + ISN. В режиме passive open как правило создаются несколько TCB.
+
+    </p>
+    
+    
+       <a href="/basic-tcp"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/basic-ospf">
         Basic OSPF
       </a>
