@@ -95,25 +95,7 @@ spec:
 }
 ```
 
-3. Преобразует полученные метаданные (те, которые приведены выше в json) в собственный формат меток. Для pods возможно создание следующих meta labels (выдержка из документации Prometheus):
-```
-__meta_kubernetes_namespace: The namespace of the pod object.
-__meta_kubernetes_pod_name: The name of the pod object.
-__meta_kubernetes_pod_ip: The pod IP of the pod object.
-__meta_kubernetes_pod_label_<labelname>: The label of the pod object.
-__meta_kubernetes_pod_annotation_<annotationname>: The annotation of the pod object.
-__meta_kubernetes_pod_container_name: Name of the container the target address points to.
-__meta_kubernetes_pod_container_port_name: Name of the container port.
-__meta_kubernetes_pod_container_port_number: Number of the container port.
-__meta_kubernetes_pod_container_port_protocol: Protocol of the container port.
-__meta_kubernetes_pod_ready: Set to true or false for the pod's ready state.
-__meta_kubernetes_pod_phase: Set to Pending, Running, Succeeded, Failed or Unknown in the lifecycle.
-__meta_kubernetes_pod_node_name: The name of the node the pod is scheduled onto.
-__meta_kubernetes_pod_host_ip: The current host IP of the pod object.
-__meta_kubernetes_pod_uid: The UID of the pod object.
-__meta_kubernetes_pod_controller_kind: Object kind of the pod controller.
-__meta_kubernetes_pod_controller_name: Name of the pod controller.
-```
+3. Преобразует полученные метаданные (те, которые приведены выше в json) в собственный формат меток. Для pods возможно создание [следующих meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod).
 
-5. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
+4. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="70%"}
