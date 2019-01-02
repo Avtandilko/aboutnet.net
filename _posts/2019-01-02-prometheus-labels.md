@@ -56,7 +56,7 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 Теперь попробуем организовать мониторинг нашего приложения. Для начала приведем примерный алгоритм работы Service Discovery в Prometheus:
 
 * Указываем в конфигурации, что хотим мониторить некие объекты кластера, например - pod.
-* Prometheus идет в API кластера, получает список всех созданных pod (адрес может быть примерно следующим [https://API_ADDRESS/api/v1/pods](it's not a true link)) и метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
+* Prometheus идет в API кластера, получает список всех созданных pod (адрес может быть примерно таким [https://API_ADDRESS/api/v1/pods](it's not a true link)) и описание каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
 
 ```json
 {
@@ -108,10 +108,10 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 }
 ```
 
-* Полученные метаданные из json будут представлены в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
-* Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и все их метки. ![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
+* Полученное описение из json будет представлено в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
+* Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и их метки, полученные из Kubernetes. ![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
 
-В дальнейшем можно фильтровать с каких именно объектов необходимо снимать метрики при помощи механизма relabeling.
+В дальнейшем по меткам можно фильтровать при помощи механизма relabeling с каких именно объектов необходимо снимать метрики.
 
 ### Relabeling
 TBD
