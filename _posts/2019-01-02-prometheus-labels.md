@@ -10,9 +10,9 @@ permalink: /prometheus-kubernetes
 
 В этой статье я хочу разобрать механизм работы Service Discovery в Prometheus для Kubernetes и пройти путь от создания pod в Kubernetes до его появления в Prometheus.
 
-### Какие метки отдает Kubernetes
+### Service Discovery. Метки в Kubernetes и Prometheus
 
-Концепция - Prometheus идет в API Kubernetes. Адрес API и необходимые реквизиты указываются в конфигурации. Посмотрим, как это происходит на примере кастомного приложения ui, которое задеплоено в кластер манифестом:
+Концепция - Prometheus идет в API Kubernetes, для этого адрес API и необходимые реквизиты указываются в конфигурации. Посмотрим, как это происходит на примере кастомного приложения ui, которое задеплоено в кластер манифестом:
 
 ```yaml
 apiVersion: apps/v1
@@ -40,10 +40,11 @@ spec:
         - containerPort: 9292
 ```
 
-Алгоритм работы (на примере pods):
+Алгоритм работы Service (на примере pods):
 
-1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера Kubernetes (адрес API, реквизиты)
-2. Prometheus идет в кластер примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет преобразован в формат Prometheus):
+1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера Kubernetes (адрес API, реквизиты);
+2. Prometheus идет в API кластера и получает список всех созданных pod;
+3. Prometheus идет в API кластера примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
 
 ```yaml
 {
@@ -94,10 +95,13 @@ spec:
   }
 }
 ```
-3. Полученные метаданные из json преобразуются в собственный формат меток Prometheus. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod).
-4. Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды, и все их метки.
-![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
+4. Полученные метаданные из json будут представлены в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
+5. Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и все их метки.
+![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"};
 
-5. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
+В дальнейшем можно фильтровать какие именно объекты необходимо мониторить при помощи механизма relabeling.
+
+##№ Relabeling
+TBD
+1. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="70%"}
-
