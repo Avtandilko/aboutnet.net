@@ -130,7 +130,7 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 Как говорилось ранее, помимо того, что Prometheus может собрать информацию об объектах кластера, нам предлагается механизм фильтрации по меткам и модификации данных меток. Следует отметить, что все метки формата __meta_*, полученные из Kubernetes, не попадут в итоговые метки для метрик в Prometheus.
 
 Общий формат описания relabeling в конфигурации Prometheus выглядит следующим образом:
-```yaml
+```
   - source_labels: метки, полученные в процессе Service Discovery, с которыми необходимо произвести какое-либо действие
     separator: разделитель в случае действий над несколькими метками
     regex: регулярное выражение для поиска значений меток или их названий
@@ -143,15 +143,15 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 
 Теперь рассмотрим типы действий (action) которые можно произвести с метками:
 
-* Replace - заменить в source_labels подпадающее под regex значение на replacement, и записть это в target_labels;
+* **Replace** - заменить в source_labels подпадающее под regex значение на replacement, и записть это в target_labels;
 * Keep - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых подпадают под regex;
 * Drop - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых НЕ подпадают под regex;
-* Labelmap - скопировать набор значений меток из source_labels в target_labels. Типовой пример использования:
+* Labelmap - скопировать набор значений меток из source_labels в target_labels. Например, данная конфигурация превратит все source_labels вида __meta_kubernetes_service_label_NAME="VALUE" в target_labels вида NAME="VALUE":
+  
 ```yaml
 - action: labelmap
 regex: __meta_kubernetes_service_label_(.+)
 ```
-Данная конфигурация превратит все source_labels вида __meta_kubernetes_service_label_NAME="VALUE" в target_labels вида NAME="VALUE"
 * Labeldrop - убрать из source_labels все метки, имена которых подпадают под regex;
 * Labelkeep - оставить в source_labels только те метки, имена которых подпадают под regex.
   
