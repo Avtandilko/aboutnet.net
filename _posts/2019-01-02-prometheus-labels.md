@@ -150,10 +150,37 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
   
 ```yaml
 - action: labelmap
-  regex: __meta_kubernetes_service_label_(.+)
+  regex: __meta_kubernetes_pod_label_(.+)
 ```
 * **Labeldrop** - убрать из source_labels все метки, имена которых подпадают под regex;
 * **Labelkeep** - оставить в source_labels только те метки, имена которых подпадают под regex.
 
-1. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
+Приведем практический пример. На входе есть приложение ui, которое после Service Discovery отдает в Prometheus следующий набор source_labels:
 ![prometheus-target](public/prometheus-target.png){:width="100%"}
+
+Применим следующую конфигурацию relabeling:
+
+```yaml
+- job_name: 'ui-pods'
+  kubernetes_sd_configs:
+    - role: pod
+  relabel_configs:
+    # Фильтрация. Оставляем для дальнейшей обработки (они появятся в targets) все поды, у которых есть kubernetes метка component со значением ui
+    - source_labels: [__meta_kubernetes_pod_label_component]
+      action: keep
+      regex: ui
+    # Модификация
+    # Переносим в target_labels все source_labels, соответствующие regex (как в примере про labelmap)
+    - action: labelmap
+      regex: __meta_kubernetes_pod_label_(.+)
+    # Переносим значения source_label в target_label для namespace и pod_name
+    - source_labels: [__meta_kubernetes_namespace]
+      target_label: kubernetes_namespace
+    - source_labels: [__meta_kubernetes_pod_name]
+      target_label: kubernetes_name
+```
+
+В итоге в метрики приложения будут перенесены все метки Kubernetes (component="ui"), а также добавлены на основе метаданных метрики kubernetes_name и kubernetes_namespace:
+```
+ui_health{component="ui",instance="10.0.1.17:9292",job="ui-pods",kubernetes_name="ui-cd4566764-lz8n7",kubernetes_namespace="ui",pod_template_hash="780122320"}
+```
