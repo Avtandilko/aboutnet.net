@@ -8,11 +8,9 @@ permalink: /prometheus-kubernetes
 
 ## Содержание
 
-В этой статье я хочу разобрать механизм работы service discovery в Prometheus для Kubernetes.
+В этой статье я хочу разобрать механизм работы Service Discovery в Prometheus для Kubernetes и пройти путь от создания pod в Kubernetes до его появления в Prometheus.
 
 ### Какие метки отдает Kubernetes
-### Как работает Service Discovery в Prometheus
-### Манипуляции над метками
 
 Концепция - Prometheus идет в API Kubernetes. Адрес API и необходимые реквизиты указываются в конфигурации. Посмотрим, как это происходит на примере кастомного приложения ui, которое задеплоено в кластер манифестом:
 
@@ -41,7 +39,6 @@ spec:
         ports:
         - containerPort: 9292
 ```
-
 
 Алгоритм работы (на примере pods):
 
@@ -98,7 +95,7 @@ spec:
 }
 ```
 
-1. Преобразует полученные метаданные (те, которые приведены выше в json) в собственный формат меток. Для pods возможно создание следующих meta labels (выдержка из документации Prometheus):
+3. Преобразует полученные метаданные (те, которые приведены выше в json) в собственный формат меток. Для pods возможно создание следующих meta labels (выдержка из документации Prometheus):
 ```
 __meta_kubernetes_namespace: The namespace of the pod object.
 __meta_kubernetes_pod_name: The name of the pod object.
@@ -118,5 +115,5 @@ __meta_kubernetes_pod_controller_kind: Object kind of the pod controller.
 __meta_kubernetes_pod_controller_name: Name of the pod controller.
 ```
 
-5. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в преобразованном формате:
+5. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="70%"}
