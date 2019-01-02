@@ -105,7 +105,8 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
     "phase": "Running",
     "conditions": [
       {
-        "type": "Ready"
+        "type": "Ready",
+        "status": "True"
       }
     ],
     "hostIP": "10.154.0.3",
