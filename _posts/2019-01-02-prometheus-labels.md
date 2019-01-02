@@ -42,10 +42,10 @@ spec:
 
 Алгоритм работы (на примере pods):
 
-1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера (адрес API, реквизиты)
+1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера Kubernetes (адрес API, реквизиты)
 2. Prometheus идет в кластер примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет преобразован в формат Prometheus):
 
-```json
+```yaml
 {
   "kind": "Pod",
   "apiVersion": "v1",
@@ -94,8 +94,10 @@ spec:
   }
 }
 ```
+3. Полученные метаданные из json преобразуются в собственный формат меток Prometheus. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod).
+4. Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды, и все их метки.
+![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
 
-3. Преобразует полученные метаданные (те, которые приведены выше в json) в собственный формат меток. Для pods возможно создание [следующих meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod).
-
-4. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
+5. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="70%"}
+
