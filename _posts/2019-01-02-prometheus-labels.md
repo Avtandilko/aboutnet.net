@@ -184,7 +184,7 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 1. Будут перенесены все метки Kubernetes (component="ui")
 2. Добавлены метки kubernetes_name и kubernetes_namespace с соответствующими значениями. 
 
-В итоге все метрики, собираемые с приложения будут выглядеть примерно следующим образом:
+В итоге все метрики собираемые с приложения будут выглядеть примерно следующим образом:
 ```
 ui_health{component="ui",instance="10.0.1.17:9292",job="ui-pods",kubernetes_name="ui-cd4566764-lz8n7",kubernetes_namespace="ui",pod_template_hash="780122320"}
 ```
