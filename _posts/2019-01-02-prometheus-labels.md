@@ -14,7 +14,7 @@ permalink: /prometheus-kubernetes
 
 Общий механизм работы следующий:
 * В файле конфигурации Prometheus указываются параметры для подключения к API Kubernetes. В простейшем примере это адрес API, CA сертификат и Bearer token.
-* В файле конфигурации Prometheus создается Job с ключевым словом kubernetes_sd_configs и указанием на роль объектов (о них далее), с которых Prometheus будет собирать метрики.
+* В файле конфигурации Prometheus создается Job с ключевым словом kubernetes_sd_configs и указанием на роль объектов (о них далее) с которых Prometheus будет собирать метрики.
 * В описании Job указываются параметры relabeling, или, проще говоря, создаются правила фильтрации, определяющие, с каких именно объектов Prometheus будет собирать метрики (например, в кластере 10 разных сервисов, но метрики в данной Job необходимо собирать только с одного из них).
 
 Посмотрим, как это происходит на примере кастомного приложения ui, которое отдает свои метрики по URL [http://IP_ADDRESS:9292/metrics](it's not a true link).
@@ -47,7 +47,7 @@ spec:
         - containerPort: 9292
 ```
 
-Далее развернем в кластере Prometheus с использованием helm-чарта stable/prometheus. В файле prometheus-values будем переопределять параметры установки Prometheus, в том числе его конфигурацию.
+Далее развернем в кластере Prometheus с использованием helm-чарта stable/prometheus. В файле prometheus-values.yml будем переопределять параметры установки Prometheus, в том числе его конфигурацию.
 
 ```
 helm install --name prometheus stable/prometheus -f prometheus-values.yml
@@ -56,8 +56,7 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 Теперь попробуем организовать мониторинг нашего приложения. Для начала приведем примерный алгоритм работы Service Discovery в Prometheus:
 
 * Указываем в конфигурации, что хотим мониторить некие объекты кластера, например - pod.
-* Prometheus идет в API кластера и получает список всех созданных pod;
-* Prometheus идет в API кластера примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
+* Prometheus идет в API кластера, получает список всех созданных pod (адрес может быть примерно следующим [https://API_ADDRESS/api/v1/pods](it's not a true link)) и метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
 
 ```json
 {
