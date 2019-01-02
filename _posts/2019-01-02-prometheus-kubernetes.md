@@ -10,6 +10,7 @@ permalink: /prometheus-kubernetes
    * [Service Discovery](/prometheus-kubernetes#Service-Discovery)
    * [Roles](/prometheus-kubernetes#Roles)
    * [Relabeling](/prometheus-kubernetes#Relabeling)
+
 В этой статье я хочу разобрать механизм работы Service Discovery в Prometheus для Kubernetes и пройти путь от создания pod в Kubernetes до его появления в Prometheus.
 
 <!---excerpt-break-->
