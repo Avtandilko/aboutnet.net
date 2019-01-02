@@ -43,7 +43,7 @@ spec:
 Алгоритм работы (на примере pods):
 
 1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера (адрес API, реквизиты)
-2. Prometheus идет в кластер примерно по такому адресу https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет преобразован в формат Prometheus):
+2. Prometheus идет в кластер примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет преобразован в формат Prometheus):
 
 ```json
 {
