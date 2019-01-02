@@ -12,7 +12,14 @@ permalink: /prometheus-kubernetes
 
 ### Service Discovery. Метки в Kubernetes и Prometheus
 
-Концепция - Prometheus идет в API Kubernetes, для этого адрес API и необходимые реквизиты указываются в конфигурации. Посмотрим, как это происходит на примере кастомного приложения ui, которое задеплоено в кластер манифестом:
+Общий механизм работы следующий:
+* В файле конфигурации Prometheus указываются параметры для подключения к API Kubernetes. В простейшем примере это адрес API, CA сертификат и Bearer token.
+* В файле конфигурации Prometheus создается Job с ключевым словом kubernetes_sd_configs и указанием на роль объектов (о них далее), с которых Prometheus будет собирать метрики.
+* В описании Job указываются параметры relabeling, или, проще говоря, создаются правила фильтрации, определяющие, с каких именно объектов Prometheus будет собирать метрики (например, в кластере 10 разных сервисов, но метрики в данной Job необходимо собирать только с одного из них).
+
+Посмотрим, как это происходит на примере кастомного приложения ui, которое отдает свои метрики по URL [http://IP_ADDRESS:9292/metrics](it's not a true link).
+
+Развернем приложение в кластере с использованием манифеста:
 
 ```yaml
 apiVersion: apps/v1
@@ -40,13 +47,19 @@ spec:
         - containerPort: 9292
 ```
 
-Алгоритм работы Service (на примере pods):
+Далее развернем в кластере Prometheus с использованием helm-чарта stable/prometheus. В файле prometheus-values будем переопределять параметры установки Prometheus, в том числе его конфигурацию.
 
-1. Создаем job с типом pods, указываем Prometheus конфигурацию кластера Kubernetes (адрес API, реквизиты);
-2. Prometheus идет в API кластера и получает список всех созданных pod;
-3. Prometheus идет в API кластера примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
+```
+helm install --name prometheus stable/prometheus -f prometheus-values.yml
+```
 
-```yaml
+Теперь попробуем организовать мониторинг нашего приложения. Для начала приведем примерный алгоритм работы Service Discovery в Prometheus:
+
+* Указываем в конфигурации, что хотим мониторить некие объекты кластера, например - pod.
+* Prometheus идет в API кластера и получает список всех созданных pod;
+* Prometheus идет в API кластера примерно по такому адресу [https://API_ADDRESS/api/v1/namespaces/NAMESPACE_NAME/pods/POD_NAME](it's not a true link) и получает метаданные каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):
+
+```json
 {
   "kind": "Pod",
   "apiVersion": "v1",
@@ -95,13 +108,13 @@ spec:
   }
 }
 ```
-4. Полученные метаданные из json будут представлены в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
-5. Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и все их метки.
-![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"};
 
-В дальнейшем можно фильтровать какие именно объекты необходимо мониторить при помощи механизма relabeling.
+* Полученные метаданные из json будут представлены в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
+* Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и все их метки. ![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
 
-##№ Relabeling
+В дальнейшем можно фильтровать с каких именно объектов необходимо снимать метрики при помощи механизма relabeling.
+
+### Relabeling
 TBD
 1. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="70%"}
