@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Prometheus Labels
+title: Prometheus and Kubernetes
 categories: Containers
 subcategories: Kubernetes
 permalink: /prometheus-kubernetes
@@ -127,7 +127,44 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 
 ### Relabeling
 
-Как говорилось ранее, помимо того, что Prometheus может собрать информацию об объектах кластера, нам предлагается механизм 
+Как говорилось ранее, помимо того, что Prometheus может собрать информацию об объектах кластера, нам предлагается механизм фильтрации по меткам и модификации данных меток. Следует отметить, что все метки формата __meta_*, полученные из Kubernetes, не попадут в итоговые метки для метрик в Prometheus.
+
+Общий формат описания relabeling в конфигурации Prometheus выглядит следующим образом:
+```yaml
+  - source_labels: метки, полученные в процессе Service Discovery, с которыми необходимо произвести какое-либо действие
+    separator: разделитель в случае действий над несколькими метками
+    regex: регулярное выражение для поиска значений меток или их названий
+    target_label: метка для метрики, в которую будет преобразована метка Service Discovery в случае совершения с ней каких-то действий
+    replacement: значение, на которое будет заменено выражение, подпадающее под regex в source_labels
+    action: действие, которое необходимо будет произвести с меткой
+```
+
+Стоит заметить, наличие всех перечисленных выше параметров в конфигурации необязательно, их набор может варьироваться в зависимости от того, какое действие необходимо произвести с метками, полученными в процессе Service Discovery.
+
+Теперь рассмотрим типы действий (action) которые можно произвести с метками:
+
+* Replace - заменить в source_labels подпадающее под regex значение на replacement, и записть это в target_labels;
+* Keep - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых подпадают под regex;
+* Drop - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых НЕ подпадают под regex;
+* Labelmap - скопировать набор значений меток из source_labels в target_labels. Типовой пример использования:
+```yaml
+- action: labelmap
+regex: __meta_kubernetes_service_label_(.+)
+```
+Данная конфигурация превратит все source_labels вида __meta_kubernetes_service_label_NAME="VALUE" в target_labels вида NAME="VALUE"
+* Labeldrop - убрать из source_labels все метки, имена которых подпадают под regex;
+* Labelkeep - оставить в source_labels только те метки, имена которых подпадают под regex.
+  
+
+replace: Match regex against the concatenated source_labels. Then, set target_label to replacement, with match group references (${1}, ${2}, ...) in replacement substituted by their value. If regex does not match, no replacement takes place.
+keep: Drop targets for which regex does not match the concatenated source_labels.
+drop: Drop targets for which regex matches the concatenated source_labels.
+hashmod: Set target_label to the modulus of a hash of the concatenated source_labels.
+labelmap: Match regex against all label names. Then copy the values of the matching labels to label names given by replacement with match group references (${1}, ${2}, ...) in replacement substituted by their value.
+labeldrop: Match regex against all label names. Any label that matches will be removed from the set of labels.
+labelkeep: Match regex against all label names. Any label that does not match will be removed from the set of labels.
+
+
 
 1. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
 ![prometheus-target](public/prometheus-target.png){:width="100%"}
