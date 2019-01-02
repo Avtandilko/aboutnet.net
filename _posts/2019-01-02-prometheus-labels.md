@@ -109,11 +109,11 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 ```
 
 * Полученное описение из json будет представлено в UI Prometheus в собственном формате. Для pods будут созданы [следующие meta labels](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod);
-* Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и их метки, полученные из Kubernetes. ![prometheus-status-sd](public/prometheus-status-sd.png){:width="70%"}
+* Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и их метки, полученные из Kubernetes. ![prometheus-status-sd](public/prometheus-status-sd.png){:width="100%"}
 
 В дальнейшем по меткам при помощи механизма relabeling можно фильтровать с каких именно объектов необходимо снимать метрики.
 
 ### Relabeling
 TBD
 1. Итого в web-интерфейсе Prometheus будет отображен найденный pod и все его метки в формате Prometheus:
-![prometheus-target](public/prometheus-target.png){:width="70%"}
+![prometheus-target](public/prometheus-target.png){:width="100%"}
