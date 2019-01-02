@@ -121,7 +121,7 @@ helm install --name prometheus stable/prometheus -f prometheus-values.yml
 
 ## Roles <a name="Roles"></a>
 
-Немного подробнее о том, для каких объектов у Prometheus работает механизм Service Discovery. Эта секция практически полностью является переводом [документации Prometheus].(https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config)
+Немного подробнее о том, для каких объектов у Prometheus работает механизм Service Discovery. Эта секция практически полностью является переводом [документации Prometheus](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config).
 
 Существует 5 типов объектов, информацию о которых Prometheus может выгрузить из Kubernetes:
 
