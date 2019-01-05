@@ -1,8 +1,7 @@
 ---
-layout: Post
+layout: post
 title: edX Introduction to DevOps
 categories: DevOps
-subcategories: DevOps Theory
 permalink: /edx-introduction-to-devops
 ---
 
