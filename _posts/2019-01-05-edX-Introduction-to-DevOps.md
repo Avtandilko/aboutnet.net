@@ -5,7 +5,9 @@ categories: DevOps
 permalink: /edx-introduction-to-devops
 ---
 
-## 1.1. Understanding Improvement (Part I)
+## Chapter 1: Why Do DevOps?
+### Section 1: Understanding Improvement
+#### 1.1. Understanding Improvement (Part I)
 
 Пример компании Knight Capital Group обанкротившейся из-за ошибки при деплое на production. Концепция pets vs cattle. В Knight Capital Group относились к серверам как к питомцам.
 
@@ -31,3 +33,4 @@ Lead Time (если следовать одноиму из определени�
 * Generetive - открыты к эспериментам, ответственность делится на всех, коммуникации поощряются - типовые high performers.
 * Pathological - ответственность четко определена, любыми силами стараются избежать ошибок, ищут козлов отпущения - типовые low performers.
 
+## 1.2. Understanding Improvement (Part II)
