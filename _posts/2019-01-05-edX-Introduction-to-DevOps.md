@@ -5,6 +5,10 @@ categories: DevOps
 permalink: /edx-introduction-to-devops
 ---
 
+Здесь будут храниться мои конспекты по курсу от edX ['Introduction to DevOps'](https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS161x+2T2016/course/).
+
+<!---excerpt-break-->
+
 ## Chapter 1: Why Do DevOps?
 ### Section 1: Understanding Improvement
 #### 1.1. Understanding Improvement (Part I)
