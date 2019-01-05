@@ -45,6 +45,7 @@ DevOps is a cultural and professional movement. (Adam Jacob, Chef)
 ```
 
 Большое влияение на DevOps оказала концепция бережливого производства (Lean).
+
 Learning fast (быстрая обучаемость?) - одна из ключевых основ DevOps.
 
 **CAMS**:
@@ -54,5 +55,6 @@ Learning fast (быстрая обучаемость?) - одна из ключ�
 * Measurement (learning);
 * Sharing (collaboration).
 
-Статья [What DevOps Means to Me](https://blog.chef.io/2010/07/16/what-devops-means-to-me/)
+Статья [What DevOps Means to Me](https://blog.chef.io/2010/07/16/what-devops-means-to-me/).
+
 CAMS - про культуру непрерывного улучшения.
