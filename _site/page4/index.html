@@ -88,7 +88,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2019. All rights reserved.
     </p>
   </div>
 </div>
@@ -110,6 +110,45 @@
 
       <div class="container content">
         <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/docker-swarm-cheatsheet">
+        Docker Swarm CheatSheet
+      </a>
+    </h1>
+
+    <span class="post-date">03 Oct 2017</span>
+
+
+    <p class="excerpt">
+      <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/docker-swarm-cheatsheet#Установка">Установка</a></li>
+  <li><a href="/docker-swarm-cheatsheet#Использование">Использование</a>
+    <ul>
+      <li><a href="/docker-swarm-cheatsheet#Использование-docker-config">Использование docker config</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="установка-">Установка <a name="Установка"></a></h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> yum-utils device-mapper-persistent-data lvm2
+<span class="nb">sudo </span>yum-config-manager <span class="nt">--add-repo</span> https://download.docker.com/linux/centos/docker-ce.repo
+<span class="nb">sudo </span>yum makecache fast
+<span class="nb">sudo </span>yum <span class="nb">install </span>docker-ce <span class="nt">-y</span>
+
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>docker
+<span class="nb">sudo </span>systemctl start docker
+</code></pre></div></div>
+
+    </p>
+    
+    
+       <a href="/docker-swarm-cheatsheet"><b>Read more</b></a>
+    
+
+  </div>
   
   <div class="post">
     <h1 class="post-title">

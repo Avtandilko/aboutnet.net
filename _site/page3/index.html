@@ -88,7 +88,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2019. All rights reserved.
     </p>
   </div>
 </div>
@@ -110,6 +110,47 @@
 
       <div class="container content">
         <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/ospfv2-loop-free-alternate-fast-reroute">
+        OSPFv2 Loop-Free Alternate Fast Reroute
+      </a>
+    </h1>
+
+    <span class="post-date">03 Oct 2017</span>
+
+
+    <p class="excerpt">
+      <h2 id="содержание">Содержание</h2>
+<ul>
+  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#термины">Термины</a></li>
+  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#предварительная-настройка">Предварительная настройка</a></li>
+  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#атрибуты-LFA-FRR">Атрибуты LFA FRR</a></li>
+</ul>
+
+<p>OSPF LFA FRR - технология, позволяющая протоколу OSPF заранее установить в RIB резервный путь для определенных префиксов и использовать его в случае отказа основного канала без расчета нового next-hop.</p>
+
+<ul>
+  <li><a href="https://tools.ietf.org/html/rfc5286">RFC 5286</a></li>
+  <li><a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-3s/iro-lfa-frr-xe.html">Описание от Cisco</a></li>
+</ul>
+
+<p>Ограничения для OSPFv2:</p>
+
+<ul>
+  <li>Не поддерживается на маршрутизаторах с virtual-link;</li>
+  <li>Не поддерживаются VRF (настройка возможна только в global OSPF instance).</li>
+</ul>
+
+
+    </p>
+    
+    
+       <a href="/ospfv2-loop-free-alternate-fast-reroute"><b>Read more</b></a>
+    
+
+  </div>
   
   <div class="post">
     <h1 class="post-title">
@@ -232,45 +273,6 @@
     
     
        <a href="/kubernetes-notes"><b>Read more</b></a>
-    
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/docker-swarm-cheatsheet">
-        Docker Swarm CheatSheet
-      </a>
-    </h1>
-
-    <span class="post-date">03 Oct 2017</span>
-
-
-    <p class="excerpt">
-      <h2 id="содержание">Содержание</h2>
-<ul>
-  <li><a href="/docker-swarm-cheatsheet#Установка">Установка</a></li>
-  <li><a href="/docker-swarm-cheatsheet#Использование">Использование</a>
-    <ul>
-      <li><a href="/docker-swarm-cheatsheet#Использование-docker-config">Использование docker config</a></li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="установка-">Установка <a name="Установка"></a></h2>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> yum-utils device-mapper-persistent-data lvm2
-<span class="nb">sudo </span>yum-config-manager <span class="nt">--add-repo</span> https://download.docker.com/linux/centos/docker-ce.repo
-<span class="nb">sudo </span>yum makecache fast
-<span class="nb">sudo </span>yum <span class="nb">install </span>docker-ce <span class="nt">-y</span>
-
-<span class="nb">sudo </span>systemctl <span class="nb">enable </span>docker
-<span class="nb">sudo </span>systemctl start docker
-</code></pre></div></div>
-
-    </p>
-    
-    
-       <a href="/docker-swarm-cheatsheet"><b>Read more</b></a>
     
 
   </div>

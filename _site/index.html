@@ -88,7 +88,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2019. All rights reserved.
     </p>
   </div>
 </div>
@@ -113,48 +113,51 @@
   
   <div class="post">
     <h1 class="post-title">
-      <a href="/kubernetes-prometheus-operator">
-        Kubernetes Prometheus Operator
+      <a href="/edx-introduction-to-devops">
+        edX Introduction to DevOps
       </a>
     </h1>
 
-    <span class="post-date">19 Jun 2018</span>
+    <span class="post-date">05 Jan 2019</span>
+
+
+    <p class="excerpt">
+      <p>Здесь будут храниться мои конспекты по курсу от edX <a href="https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS161x+2T2016/course/">‘Introduction to DevOps’</a>.</p>
+
+
+    </p>
+    
+    
+       <a href="/edx-introduction-to-devops"><b>Read more</b></a>
+    
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/prometheus-kubernetes">
+        Prometheus and Kubernetes
+      </a>
+    </h1>
+
+    <span class="post-date">02 Jan 2019</span>
 
 
     <p class="excerpt">
       <h2 id="содержание">Содержание</h2>
 <ul>
-  <li><a href="/kubernetes-prometheus-operator#установка(helm)">Установка (helm)</a>
-    <ul>
-      <li><a href="/kubernetes-prometheus-operator#предварительные-изменения">Предварительные изменения</a></li>
-      <li><a href="/kubernetes-prometheus-operator#установка">Установка</a></li>
-    </ul>
-  </li>
-  <li><a href="/kubernetes-prometheus-operator#примеры-использования">Примеры использования</a>
-    <ul>
-      <li><a href="/kubernetes-prometheus-operator#добавление-своего-dashboard-в-grafana">Добавление своего dashboard в Grafana</a></li>
-      <li><a href="/kubernetes-prometheus-operator#добавление-custom-alerts">Добавление custom alerts</a></li>
-      <li><a href="/kubernetes-prometheus-operator#persistent-storage">Persistent storage</a></li>
-      <li><a href="/kubernetes-prometheus-operator#добавление-custom-alerts">Отправка уведомлений</a></li>
-      <li><a href="/kubernetes-prometheus-operator#добавление-custom-alerts">Ingress</a></li>
-    </ul>
-  </li>
-  <li><a href="/kubernetes-prometheus-operator#мониторинг-сервисов-внутри-pod">Мониторинг сервисов внутри pod</a>
-    <ul>
-      <li><a href="/kubernetes-prometheus-operator#описание">Описание</a></li>
-      <li><a href="/kubernetes-prometheus-operator#конфигурации">Конфигурации</a></li>
-    </ul>
-  </li>
+  <li><a href="/prometheus-kubernetes#Service-Discovery">Service Discovery</a></li>
+  <li><a href="/prometheus-kubernetes#Roles">Roles</a></li>
+  <li><a href="/prometheus-kubernetes#Relabeling">Relabeling</a></li>
 </ul>
 
-<p>В данной статье описано, как установить, обеспечить работоспособность и настроить Prometheus Operator в кластере GCE. Большая часть статьи применима независимо от места развертывания кластера k8s.</p>
+<p>В этой статье я хочу разобрать механизм работы Service Discovery в Prometheus для Kubernetes и пройти путь от создания pod в Kubernetes до его появления в Prometheus.</p>
 
-<p>Следует учитывать, что статья написана в процессе ознакомления с Kubernetes и мониторингом кластера, поэтому многие инструкции могут быть неоптимальными, несовместимыми с использованием в production, либо просто некорретными. 
 
     </p>
     
     
-       <a href="/kubernetes-prometheus-operator"><b>Read more</b></a>
+       <a href="/prometheus-kubernetes"><b>Read more</b></a>
     
 
   </div>
@@ -234,42 +237,6 @@
     
     
        <a href="/simple-cd-with-teamcity-docker-ansible"><b>Read more</b></a>
-    
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/understanding-and-deploying-cisco-sd-wan">
-        Understanding and Deploying Cisco SD-WAN (BRKRST-2767)
-      </a>
-    </h1>
-
-    <span class="post-date">28 Dec 2017</span>
-
-
-    <p class="excerpt">
-      <h2 id="device-roles">Device roles</h2>
-
-<ul>
-  <li>vManage - interface for login to the system, configure, monitor and troubleshoot it;</li>
-  <li>vSmart Controllers - brains of the operation. Policies configured on vManage pushed down to vSmart Controllers;</li>
-  <li>vBond - tool for ZTP, it instruct routers how to join the network;</li>
-  <li>On-Site routers (<a href="http://viptela.com/vedge-cloud-datasheet/">vEdge</a> or Cisco ASR/ISR 1k/4k in 2018).</li>
-</ul>
-
-<h2 id="concepts">Concepts</h2>
-<p>Overlay Management Protocol (OMP) - TCP based control protocol, creates a peering relationships between vEdge routers and vSmart Controllers over the TLS/DTLS tunnels and used to exchange policies and routes.</p>
-
-<p>At the same time BFD used to provide health checks of the network (DSCP CS6 now and different DSCP values to simulate specific protocols in future implementations).</p>
-
-<p>Transport Locators (TLOCs) - identifiers of vEdge routers and vSmart Controllers.</p>
-
-
-    </p>
-    
-    
-       <a href="/understanding-and-deploying-cisco-sd-wan"><b>Read more</b></a>
     
 
   </div>

@@ -88,7 +88,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2018. All rights reserved.
+      &copy; <a href="https://jekyllrb.com/">Jekyll</a> & <a href="http://lanyon.getpoole.com/">Lanyon</a>. 2019. All rights reserved.
     </p>
   </div>
 </div>
@@ -110,6 +110,42 @@
 
       <div class="container content">
         <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/understanding-and-deploying-cisco-sd-wan">
+        Understanding and Deploying Cisco SD-WAN (BRKRST-2767)
+      </a>
+    </h1>
+
+    <span class="post-date">28 Dec 2017</span>
+
+
+    <p class="excerpt">
+      <h2 id="device-roles">Device roles</h2>
+
+<ul>
+  <li>vManage - interface for login to the system, configure, monitor and troubleshoot it;</li>
+  <li>vSmart Controllers - brains of the operation. Policies configured on vManage pushed down to vSmart Controllers;</li>
+  <li>vBond - tool for ZTP, it instruct routers how to join the network;</li>
+  <li>On-Site routers (<a href="http://viptela.com/vedge-cloud-datasheet/">vEdge</a> or Cisco ASR/ISR 1k/4k in 2018).</li>
+</ul>
+
+<h2 id="concepts">Concepts</h2>
+<p>Overlay Management Protocol (OMP) - TCP based control protocol, creates a peering relationships between vEdge routers and vSmart Controllers over the TLS/DTLS tunnels and used to exchange policies and routes.</p>
+
+<p>At the same time BFD used to provide health checks of the network (DSCP CS6 now and different DSCP values to simulate specific protocols in future implementations).</p>
+
+<p>Transport Locators (TLOCs) - identifiers of vEdge routers and vSmart Controllers.</p>
+
+
+    </p>
+    
+    
+       <a href="/understanding-and-deploying-cisco-sd-wan"><b>Read more</b></a>
+    
+
+  </div>
   
   <div class="post">
     <h1 class="post-title">
@@ -229,47 +265,6 @@ proc on /proc <span class="nb">type </span>proc <span class="o">(</span>rw,nosui
     
     
        <a href="/sql-basics"><b>Read more</b></a>
-    
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/ospfv2-loop-free-alternate-fast-reroute">
-        OSPFv2 Loop-Free Alternate Fast Reroute
-      </a>
-    </h1>
-
-    <span class="post-date">03 Oct 2017</span>
-
-
-    <p class="excerpt">
-      <h2 id="содержание">Содержание</h2>
-<ul>
-  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#термины">Термины</a></li>
-  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#предварительная-настройка">Предварительная настройка</a></li>
-  <li><a href="/ospfv2-loop-free-alternate-fast-reroute#атрибуты-LFA-FRR">Атрибуты LFA FRR</a></li>
-</ul>
-
-<p>OSPF LFA FRR - технология, позволяющая протоколу OSPF заранее установить в RIB резервный путь для определенных префиксов и использовать его в случае отказа основного канала без расчета нового next-hop.</p>
-
-<ul>
-  <li><a href="https://tools.ietf.org/html/rfc5286">RFC 5286</a></li>
-  <li><a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-3s/iro-lfa-frr-xe.html">Описание от Cisco</a></li>
-</ul>
-
-<p>Ограничения для OSPFv2:</p>
-
-<ul>
-  <li>Не поддерживается на маршрутизаторах с virtual-link;</li>
-  <li>Не поддерживаются VRF (настройка возможна только в global OSPF instance).</li>
-</ul>
-
-
-    </p>
-    
-    
-       <a href="/ospfv2-loop-free-alternate-fast-reroute"><b>Read more</b></a>
     
 
   </div>

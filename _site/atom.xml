@@ -4,7 +4,7 @@
  <title>AboutNet</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2018-06-20T18:05:40-04:00</updated>
+ <updated>2019-01-26T07:14:56-05:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
@@ -13,318 +13,333 @@
 
  
  <entry>
-   <title>Kubernetes Prometheus Operator</title>
-   <link href="http://localhost:4000/kubernetes-prometheus-operator"/>
-   <updated>2018-06-19T00:00:00-04:00</updated>
-   <id>http://localhost:4000/kubernetes-prometheus-operator</id>
-   <content type="html">&lt;h2 id=&quot;содержание&quot;&gt;Содержание&lt;/h2&gt;
+   <title>edX Introduction to DevOps</title>
+   <link href="http://localhost:4000/edx-introduction-to-devops"/>
+   <updated>2019-01-05T00:00:00-05:00</updated>
+   <id>http://localhost:4000/edx-introduction-to-devops</id>
+   <content type="html">&lt;p&gt;Здесь будут храниться мои конспекты по курсу от edX &lt;a href=&quot;https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS161x+2T2016/course/&quot;&gt;‘Introduction to DevOps’&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!---excerpt-break--&gt;
+
+&lt;h2 id=&quot;chapter-1-why-do-devops&quot;&gt;Chapter 1: Why Do DevOps?&lt;/h2&gt;
+&lt;h3 id=&quot;section-1-understanding-improvement&quot;&gt;Section 1: Understanding Improvement&lt;/h3&gt;
+&lt;h4 id=&quot;11-understanding-improvement-part-i&quot;&gt;1.1. Understanding Improvement (Part I)&lt;/h4&gt;
+
+&lt;p&gt;Пример компании Knight Capital Group обанкротившейся из-за ошибки при деплое на production. Концепция pets vs cattle. В Knight Capital Group относились к серверам как к питомцам.&lt;/p&gt;
+
+&lt;p&gt;Классическая проблема - Iron Triangle с вершинами reliability (Ops), speed (Dev), cost. Можем выбрать любые два пункта, пожервтовав третьим. DevOps - позволяет решить эту проблему и увидеть, что можно совместить эти три фактора.&lt;/p&gt;
+
+&lt;p&gt;Lead Time (если следовать одному из определений) - время от зарождения идеи до появления результата в production. У high performers это время примерно в 200 раз меньше, чем у low performers (2015 г.) благодаря, в том числе, следованию культурным паттернам.&lt;/p&gt;
+
+&lt;p&gt;Вводятся четыре метрики (по State Of Devops от DORA за 2018 год их уже 5), по которым можно оценить организации:&lt;/p&gt;
+
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#установка(helm)&quot;&gt;Установка (helm)&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#предварительные-изменения&quot;&gt;Предварительные изменения&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#установка&quot;&gt;Установка&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#примеры-использования&quot;&gt;Примеры использования&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-своего-dashboard-в-grafana&quot;&gt;Добавление своего dashboard в Grafana&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Добавление custom alerts&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#persistent-storage&quot;&gt;Persistent storage&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Отправка уведомлений&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#добавление-custom-alerts&quot;&gt;Ingress&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#мониторинг-сервисов-внутри-pod&quot;&gt;Мониторинг сервисов внутри pod&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#описание&quot;&gt;Описание&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;/kubernetes-prometheus-operator#конфигурации&quot;&gt;Конфигурации&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Deployment frequency;&lt;/li&gt;
+  &lt;li&gt;Lead time;&lt;/li&gt;
+  &lt;li&gt;Failure rate;&lt;/li&gt;
+  &lt;li&gt;MTTR (mean time to recover).&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;В данной статье описано, как установить, обеспечить работоспособность и настроить Prometheus Operator в кластере GCE. Большая часть статьи применима независимо от места развертывания кластера k8s.&lt;/p&gt;
+&lt;p&gt;Три типа организаций по Веструму:&lt;/p&gt;
 
-&lt;p&gt;Следует учитывать, что статья написана в процессе ознакомления с Kubernetes и мониторингом кластера, поэтому многие инструкции могут быть неоптимальными, несовместимыми с использованием в production, либо просто некорретными. 
-&lt;!---excerpt-break--&gt;&lt;/p&gt;
-&lt;h2 id=&quot;установка-helm-&quot;&gt;Установка (helm) &lt;a name=&quot;установка(helm)&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id=&quot;предварительные-изменения-&quot;&gt;Предварительные изменения &lt;a name=&quot;предварительные-изменения&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Pathological;&lt;/li&gt;
+  &lt;li&gt;Bureaucratic;&lt;/li&gt;
+  &lt;li&gt;Generative.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;1) Отключение ssl для сбора метрик kubelet:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https: false
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;2) Изменение порта и url для получения метрик cadvisor:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  - port: http-metrics
-    interval: 15s
-  - port: http-metrics
-    path: /metrics/cadvisor
-    interval: 30s
-    honorLabels: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;3) Изменение репозитория helm для установки kube-prometheus на локальный:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -ie 's/    repository/#    repository/g' helm/kube-prometheus/requirements.yaml
-sed -ie 's/#e2e-repository/repository/g' helm/kube-prometheus/requirements.yaml
-helm dependency update helm/kube-prometheus/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;4) Изменение datasource в Grafana на корректный:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;prometheus-datasource.json: |+
-  {
-    &quot;access&quot;: &quot;proxy&quot;,
-    &quot;basicAuth&quot;: false,
-    &quot;name&quot;: &quot;prometheus&quot;,
-    &quot;type&quot;: &quot;prometheus&quot;,
-    &quot;url&quot;: &quot;http://prometheus:9090&quot;
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;5) Подключение alertmanager к prometheus:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alertingEndpoints:
-   - name: alertmanager
-     namespace: monitoring
-     port: http
-     scheme: http
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;установка-&quot;&gt;Установка &lt;a name=&quot;установка&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Рассматриваем два из них:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/coreos/prometheus-operator.git &amp;amp;&amp;amp; cd prometheus-operator
+&lt;ul&gt;
+  &lt;li&gt;Generative - открыты к эспериментам, ответственность делится на всех, коммуникации поощряются - типовые high performers.&lt;/li&gt;
+  &lt;li&gt;Pathological - ответственность четко определена, любыми силами стараются избежать ошибок, ищут “козлов отпущения” - типовые low performers.&lt;/li&gt;
+&lt;/ul&gt;
 
-helm install --name prometheus-operator --set rbacEnable=true --namespace=monitoring helm/prometheus-operator --tls
-helm install --name prometheus --set serviceMonitorsSelector.app=prometheus --set ruleSelector.app=prometheus --namespace=monitoring helm/prometheus --tls
-helm install --name alertmanager --namespace=monitoring helm/alertmanager --tls
-helm install --name grafana --namespace=monitoring helm/grafana --tls
-helm install --name kube-prometheus --namespace=monitoring helm/kube-prometheus --tls
+&lt;h4 id=&quot;12-understanding-improvement-part-ii&quot;&gt;1.2. Understanding Improvement (Part II)&lt;/h4&gt;
+
+&lt;p&gt;Нет единого определения того, что такое DevOps. Одно из наиболее удачных:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DevOps is a cultural and professional movement. (Adam Jacob, Chef)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;примеры-использования-&quot;&gt;Примеры использования &lt;a name=&quot;примеры-использования&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id=&quot;добавление-своего-dashboard-в-grafana-&quot;&gt;Добавление своего dashboard в Grafana &lt;a name=&quot;добавление-своего-dashboard-в-grafana&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Большое влияние на DevOps оказала концепция бережливого производства (Lean).&lt;/p&gt;
 
-&lt;p&gt;Существует несколько способов добавления dashboard в Grafana. Более правильный описан в документации (helm/grafana/README.md) и подразумевает создание отдельного ConfigMap и вынос custom dashboard’ов в отдельную директорию.&lt;/p&gt;
+&lt;p&gt;Learning fast (быстрая обучаемость?) - одна из ключевых основ DevOps.&lt;/p&gt;
 
-&lt;p&gt;Более простой способ - скопировать json файл с dashboard, импортированный из Grafana, в директорию helm/grafana/dashboards, обернув его в следующий код (необходимо для работы Grafana Watcher):&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-    &quot;dashboard&quot;:
-&amp;lt;-- initial code --&amp;gt;,
-      &quot;inputs&quot;: [
-        {
-            &quot;name&quot;: &quot;DS_PROMETHEUS&quot;,
-            &quot;pluginId&quot;: &quot;prometheus&quot;,
-            &quot;type&quot;: &quot;datasource&quot;,
-            &quot;value&quot;: &quot;prometheus&quot;
-        }
-    ],
-    &quot;overwrite&quot;: true
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;добавление-custom-alerts-&quot;&gt;Добавление custom alerts &lt;a name=&quot;добавление-custom-alerts&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;CAMS&lt;/strong&gt;:&lt;/p&gt;
 
-&lt;p&gt;Существует несколько способов добавления оповещений. Также в репозиторий включен набор преднастроенных оповещений (contrib/kube-prometheus/manifests/prometheus-rules.yaml)&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Culture (improvement);&lt;/li&gt;
+  &lt;li&gt;Automation (delivery);&lt;/li&gt;
+  &lt;li&gt;Measurement (learning);&lt;/li&gt;
+  &lt;li&gt;Sharing (collaboration).&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Для того, чтобы включились встроенные оповещения, необходимо сделать следующие вещи:&lt;/p&gt;
+&lt;p&gt;Статья &lt;a href=&quot;https://blog.chef.io/2010/07/16/what-devops-means-to-me/&quot;&gt;What DevOps Means to Me&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;1) Корректно выставить labels в манифесте, содержащем правила, для того, чтобы подпадать под ruleSelector:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;metadata:
-  labels:
-    prometheus: prometheus
-    role: alert-rules
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;2) Применить манифест:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply -n monitoring -f contrib/kube-prometheus/manifests/prometheus-rules.yaml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;CAMS - про культуру непрерывного улучшения.&lt;/p&gt;
 
-&lt;p&gt;3) Возможно отредактировать конфигурацию самого ruleSelector:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ruleSelector:
-    matchLabels:
-      role: alert-rules
-      prometheus: prometheus
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;4) Обновить конфигурацию prometheus:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm upgrade prometheus helm/prometheus --tls  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Существует другой, более простой способ:&lt;/p&gt;
+&lt;h4 id=&quot;13-understanding-improvement-part-iii&quot;&gt;1.3. Understanding Improvement (Part III)&lt;/h4&gt;
 
-&lt;p&gt;1) Переопределить в values.yml ruleSelector, например:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rulesSelector: {
-  matchLabels: {
-	role: alert-rules
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;2) Обновить конфигурацию prometheus:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm upgrade prometheus helm/prometheus --tls  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Соответственно, для того, чтобы заработало свое правило оповещения, необходимо создать манифест следующего вида и применить его:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  labels:
-    role: alert-rules
-  name: custom-prometheus-rules
-  namespace: monitoring
-spec:
-  groups:
-  - name: custom.rules
-    rules:
-&amp;lt;-- rules --&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Пример правила оповещения:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  labels:
-    role: alert-rules
-  name: custom-prometheus-rules
-  namespace: monitoring
-spec:
-  groups:
-  - name: custom.rules
-    rules:
-    - alert: KubernetesTooManyRunningPods
-      annotations:
-        message: &quot;Too many running pods on the node `}}.&quot;
-      expr: |
-        kubelet_running_pod_count &amp;gt; 15
-      for: 1m
-      labels:
-        severity: warning
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Пример добавления правила оповещения:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl apply -n monitoring -f custom/prometheus-rules/custom-prometheus-rules.yaml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;persistent-storage-&quot;&gt;Persistent storage &lt;a name=&quot;persistent-storage&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Japan’s Influence (Toyota Production Systems):&lt;/p&gt;
 
-&lt;p&gt;Рассматривается развертывание с использование своего StorageClass prometheus-ssd-sc (одна зона, ssd, отсутствие репликации).
-Манифест для storageClass:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: prometheus-ssd-sc
-provisioner: kubernetes.io/gce-pd
-parameters:
-  type: pd-ssd
-  zone: europe-west3-a
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Для того, чтобы подключить данный sc в prometheus, необходимо раскомментировать и заполнить секцию storageSpec в файле values.yaml:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;storageSpec:
-  volumeClaimTemplate:
-    spec:
-      selector:
-        matchLabels:
-          namespace: monitoring
-      accessModes: [ &quot;ReadWriteOnce&quot; ]
-      storageClassName: prometheus-ssd-sc
-      resources:
-        requests:
-          storage: 2Gi
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Работа pv проверена путем удаления prometheus helm release и его последующей установкой. Данные из pv при этом не теряются.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Muda (waste) - про деятельность, которая не создает ценности для клиента (ручной труд vs автоматизация;&lt;/li&gt;
+  &lt;li&gt;Mura (flow) - про определение узких мест (“бутылочных горлышек”) в системе, неравномерность выполнения работы;&lt;/li&gt;
+  &lt;li&gt;Muri (stress) - про повышенную или пониженную нагрузку в различные периоды времени;&lt;/li&gt;
+  &lt;li&gt;Kaizen (improvement) - про непрерывное совершенствование;&lt;/li&gt;
+  &lt;li&gt;Kata (form) - про формализацию перечисленного выше, превращение в “мышечную память”.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Время хранения метрик задается в файле /helm/prometheus/values.yaml в переменной retention. По умолчанию prometheus хранит метрики 24 часа.&lt;/p&gt;
+&lt;p&gt;Книги:&lt;/p&gt;
 
-&lt;p&gt;Пример графика потребления RAM, разделенного по pod (в период отсутствия метрик helm release prometheus был полностью удален из k8s):
-&lt;img src=&quot;public/kubernetes-prometheus-operator-img0.png&quot; alt=&quot;kubernetes-prometheus-operator-img0&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The Phoenix Project;&lt;/li&gt;
+  &lt;li&gt;DevOps Handbook.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3 id=&quot;отправка-уведомлений-&quot;&gt;Отправка уведомлений &lt;a name=&quot;отправка-уведомлений&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;14-understanding-improvement-part-iv&quot;&gt;1.4. Understanding Improvement (Part IV)&lt;/h4&gt;
 
-&lt;p&gt;Для отправки уведомлений (в примере - отправка на почту), необходимо привести конфигурацию values.yaml к аналогичному виду:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config:
-  global:
-    resolve_timeout: 5m
-    smtp_smarthost: &amp;lt;smtp-server&amp;gt;
-    smtp_from: &amp;lt;smtp-from&amp;gt;
-    smtp_auth_username: &amp;lt;smtp-username&amp;gt;
-    smtp_auth_password: &amp;lt;smtp-password&amp;gt;
-  route:
-    group_by: ['job']
-    group_wait: 30s
-    group_interval: 5m
-    repeat_interval: 12h
-    receiver: &amp;lt;receiver-name&amp;gt;
-  receivers:
-  - name: &amp;lt;receiver-name&amp;gt;
-    email_configs:
-      - to: &amp;lt;target@e-mail.address&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;ingress-&quot;&gt;Ingress &lt;a name=&quot;ingress&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Книга - Jez Humble, “Continuous Delivery”.&lt;/p&gt;
 
-&lt;p&gt;Типовой Ingress для любого сервиса настраивается в файле values.yaml данного сервиса. На примере grafana:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ingress:
-  enabled: true
-  hosts: 
-    - grafana.example.com
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h2 id=&quot;мониторинг-сервисов-внутри-pod-&quot;&gt;Мониторинг сервисов внутри pod &lt;a name=&quot;мониторинг-сервисов-внутри-pod&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id=&quot;описание-&quot;&gt;Описание &lt;a name=&quot;описание&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Принципы Continuous Delivery:&lt;/p&gt;
 
-&lt;p&gt;Задача - получать в prometheus метрики с exporters, запущенных внутри pod. При изменениях prometheus должен автоматически узнавать о них.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Build quality in (покрытие тестами должно быть максимальным);&lt;/li&gt;
+  &lt;li&gt;Work in small batches;&lt;/li&gt;
+  &lt;li&gt;Automate repeatable tasks;&lt;/li&gt;
+  &lt;li&gt;Pursue continuous improvement;&lt;/li&gt;
+  &lt;li&gt;Everyone is responsible (“If you build it, you own it”).&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Для демонстрации в namespace custom-ns создан deployment из двух pod с prometheus node-exporter.&lt;/p&gt;
+&lt;p&gt;Антипаттерны Continuous Delivery:&lt;/p&gt;
 
-&lt;p&gt;Решается задача при помощи двух сущностей.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Incongruent testing and production environments;&lt;/li&gt;
+  &lt;li&gt;Testing takes too long;&lt;/li&gt;
+  &lt;li&gt;Manual regression and acceptance tests (any manual work);&lt;/li&gt;
+  &lt;li&gt;Long lead times;&lt;/li&gt;
+  &lt;li&gt;High technical debt;&lt;/li&gt;
+  &lt;li&gt;Slow and hard to change.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;1) Service - связывает конфигурацию pod и ServiceMonitor;&lt;/p&gt;
+&lt;p&gt;Паттерны Continuous Delivery:&lt;/p&gt;
 
-&lt;p&gt;2) ServiceMonitor - связывает конфигурацию Service и prometheus.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Everything starts in source control;&lt;/li&gt;
+  &lt;li&gt;Peer reviews (pull requests);&lt;/li&gt;
+  &lt;li&gt;Automate everything;&lt;/li&gt;
+  &lt;li&gt;TBD;&lt;/li&gt;
+  &lt;li&gt;“Done” means “Released”;&lt;/li&gt;
+  &lt;li&gt;Stop the line (возможность остановить цифровой конвейер и сосредоточиться на устранении багов, или других причин, ломающих процесс).&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Prometheus and Kubernetes</title>
+   <link href="http://localhost:4000/prometheus-kubernetes"/>
+   <updated>2019-01-02T00:00:00-05:00</updated>
+   <id>http://localhost:4000/prometheus-kubernetes</id>
+   <content type="html">&lt;h2 id=&quot;содержание&quot;&gt;Содержание&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/prometheus-kubernetes#Service-Discovery&quot;&gt;Service Discovery&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/prometheus-kubernetes#Roles&quot;&gt;Roles&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/prometheus-kubernetes#Relabeling&quot;&gt;Relabeling&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;После настройки данных сущностей, для любого сервиса, находящегося в namespace custom-ns и имеющего метку custom-node-exporter, prometheus будет пытаться забрать метрики с порта 9100 (node-exporter)/&lt;/p&gt;
+&lt;p&gt;В этой статье я хочу разобрать механизм работы Service Discovery в Prometheus для Kubernetes и пройти путь от создания pod в Kubernetes до его появления в Prometheus.&lt;/p&gt;
 
-&lt;p&gt;Пример targets в prometheus:
-&lt;img src=&quot;public/kubernetes-prometheus-operator-img1.png&quot; alt=&quot;kubernetes-prometheus-operator-img1&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+&lt;!---excerpt-break--&gt;
 
-&lt;h3 id=&quot;конфигурации-&quot;&gt;Конфигурации &lt;a name=&quot;конфигурации&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: custom-node-exporter-deployment
-spec:
-  selector:
-    matchLabels:
-      app: custom-node-exporter
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: custom-node-exporter
-    spec:
-      containers:
-      - name: node-exporter
-        image: prom/node-exporter
-        ports:
-        - containerPort: 9100
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: custom-servicemonitor
-  labels:
-    app: custom-node-exporter
-    prometheus: kube-prometheus
-spec:
-  selector:
-    matchLabels:
-      app: custom-node-exporter
-  namespaceSelector:
-    matchNames:
-      - custom-ns
-  endpoints:
-  - port: custom-metrics
-    path: /metrics
-    interval: 10s
-    honorLabels: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: v1
-kind: Service
-metadata:
-  name: custom-service
-  labels:
-    app: custom-node-exporter
-spec:
-  selector:
-    app: custom-node-exporter
-  ports:
-  - name: custom-metrics
-    protocol: TCP
-    port: 9100
-    targetPort: 9100
+&lt;h2 id=&quot;service-discovery-&quot;&gt;Service Discovery &lt;a name=&quot;Service-Discovery&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Общий механизм работы следующий:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;В файле конфигурации Prometheus указываются параметры для подключения к API Kubernetes. В простейшем примере это адрес API, CA сертификат и Bearer token;&lt;/li&gt;
+  &lt;li&gt;В файле конфигурации Prometheus создается Job с ключевым словом kubernetes_sd_configs и указанием на роль объектов (о них далее) с которых Prometheus будет собирать метрики.&lt;/li&gt;
+  &lt;li&gt;В описании Job указываются параметры relabeling, или, проще говоря, создаются правила фильтрации, определяющие, с каких именно объектов Prometheus будет собирать метрики (например, в кластере 10 разных сервисов, но метрики в данной Job необходимо собирать только с одного из них). Также механизм relabeling может использоваться для изменения значений меток (например для доступа к объектам мониторинга через API, а не напрямую по внутренним адресам).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Посмотрим, как это происходит на примере кастомного приложения ui, которое отдает свои метрики по URL &lt;a href=&quot;it's not a true link&quot;&gt;http://IP_ADDRESS:9292/metrics&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Развернем приложение в кластере с использованием манифеста:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apps/v1&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Deployment&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;component&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;namespace&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;replicas&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;matchLabels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;component&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui-pod&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;component&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;containers&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;avtandilko/ui:7&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;containerPort&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;9292&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;Далее развернем в кластере Prometheus с использованием helm-чарта stable/prometheus. В файле prometheus-values.yml будем переопределять параметры установки Prometheus, в том числе его конфигурацию.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm install --name prometheus stable/prometheus -f prometheus-values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Теперь попробуем организовать мониторинг нашего приложения. Для начала приведем примерный алгоритм работы Service Discovery в Prometheus:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Указываем в конфигурации, что хотим мониторить некие объекты кластера, например - pod.&lt;/li&gt;
+  &lt;li&gt;Prometheus идет в API кластера, получает список всех созданных pod (адрес может быть примерно таким &lt;a href=&quot;it's not a true link&quot;&gt;https://API_ADDRESS/api/v1/pods&lt;/a&gt;) и описание каждого пода в следующем формате (оставлен только вывод который будет использован в дальнейшем):&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;kind&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Pod&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;apiVersion&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;v1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui-cd4566764-lz8n7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;generateName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui-cd4566764-&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;namespace&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfLink&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/api/v1/namespaces/ui/pods/ui-cd4566764-lz8n7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;7b567e9a-0eb1-11e9-a168-42010a9a012a&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;labels&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;component&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;pod-template-hash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;780122320&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;annotations&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cni.projectcalico.org/podIP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;10.0.1.17/32&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ownerReferences&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;apiVersion&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;apps/v1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;kind&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ReplicaSet&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui-cd4566764&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;controller&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;spec&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;containers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ui&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;avtandilko/ui:7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ports&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;containerPort&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9292&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+            &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;protocol&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;TCP&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;status&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;phase&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Running&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;conditions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Ready&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;status&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;True&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hostIP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;10.154.0.3&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;podIP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;10.0.1.17&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Полученное описение из json будет представлено в UI Prometheus в собственном формате. Для pods будут созданы &lt;a href=&quot;https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod&quot;&gt;следующие meta labels&lt;/a&gt;;&lt;/li&gt;
+  &lt;li&gt;Итого в секции Status/Service Discovery в Prometheus будут видны все найденные поды и их метки, полученные из Kubernetes. &lt;img src=&quot;public/prometheus-status-sd.png&quot; alt=&quot;prometheus-status-sd&quot; width=&quot;100%&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;В дальнейшем по меткам при помощи механизма relabeling можно фильтровать с каких именно объектов необходимо снимать метрики.&lt;/p&gt;
+
+&lt;h2 id=&quot;roles-&quot;&gt;Roles &lt;a name=&quot;Roles&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Немного подробнее о том, для каких объектов у Prometheus работает механизм Service Discovery. Эта секция практически полностью является переводом &lt;a href=&quot;https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config&quot;&gt;документации Prometheus&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Существует 5 типов объектов, информацию о которых Prometheus может выгрузить из Kubernetes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Nodes&lt;/strong&gt; - подходит для сущностей, у которых на каждой физической ноде кластера находится по одному экземпляру (kubelet, etc…). Kubernetes отдает список нод с определенными метками (при помощи relabeling можно изменить, например, порт с которого будут собираться метрики, по умолчанию это порт kubelet);&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Pod&lt;/strong&gt; - Kubernetes отдает список всех подов, для каждого слушаемого контейнером порта (указанного при этом в конфигурации) будет создаваться отдельный target;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Endpoints&lt;/strong&gt; - Kubernetes будет возвращать список всех Endpoint, созданных каким либо сервисом (либо вручную). Помимо меток непосредственно Endpoint, также собираются метки, характерные для сервисов (если Endpoint создан сервисом) и метки характерные для подов (если Endpoint “смотрит” на pod);&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Service&lt;/strong&gt; и &lt;strong&gt;Ingress&lt;/strong&gt; - соответственно отдается список Service и Ingress в кластере, с характерными для них метками. Могут использоваться для BlackBox мониторинга (например, для оценки - работает ли приложение в целом, не заостряя внимание на метриках конкретных pod данного приложения).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;relabeling-&quot;&gt;Relabeling &lt;a name=&quot;Relabeling&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Как говорилось ранее, помимо того, что Prometheus может собрать информацию об объектах кластера, нам предлагается механизм фильтрации по меткам и модификации данных меток. Следует отметить, что все метки формата &lt;code class=&quot;highlighter-rouge&quot;&gt;__meta_*&lt;/code&gt;, полученные из Kubernetes, не попадут в итоговые метки для метрик в Prometheus.&lt;/p&gt;
+
+&lt;p&gt;Общий формат описания relabeling в конфигурации Prometheus выглядит следующим образом:&lt;/p&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;source_labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;метки, полученные в процессе Service Discovery, с которыми необходимо произвести какое-либо действие&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;separator&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;разделитель в случае действий над несколькими метками&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;регулярное выражение для поиска значений меток или их названий&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;target_label&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;метки для метрик в которые будут преобразованы метки Service Discovery в случае совершения с ними каких-то действий&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;replacement&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;значение, на которое будет заменено выражение, подпадающее под regex в source_labels&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;действие, которое необходимо будет произвести с меткой&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Стоит заметить, наличие всех перечисленных выше параметров в конфигурации необязательно, их набор может варьироваться в зависимости от того, какое действие необходимо произвести с метками, полученными в процессе Service Discovery.&lt;/p&gt;
+
+&lt;p&gt;Теперь рассмотрим типы действий (action) которые можно произвести с метками:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Replace&lt;/strong&gt; - заменить в source_labels подпадающее под regex значение на replacement, и записть это в target_labels;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep&lt;/strong&gt; - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых подпадают под regex;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Drop&lt;/strong&gt; - оставить для дальнейшего рассмотрения только те объекты, значения source_labels которых НЕ подпадают под regex;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Labelmap&lt;/strong&gt; - скопировать набор значений меток из source_labels в target_labels. Например, данная конфигурация превратит все source_labels вида &lt;code class=&quot;highlighter-rouge&quot;&gt;__meta_kubernetes_service_label_NAME=&quot;VALUE&quot;&lt;/code&gt; в target_labels вида &lt;code class=&quot;highlighter-rouge&quot;&gt;NAME=&quot;VALUE&quot;&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;labelmap&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;__meta_kubernetes_pod_label_(.+)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Labeldrop&lt;/strong&gt; - убрать из source_labels все метки, имена которых подпадают под regex;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Labelkeep&lt;/strong&gt; - оставить в source_labels только те метки, имена которых подпадают под regex.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Приведем практический пример. На входе есть приложение ui, которое после Service Discovery отдает в Prometheus следующий набор source_labels:
+&lt;img src=&quot;public/prometheus-target.png&quot; alt=&quot;prometheus-target&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Применим следующую конфигурацию relabeling:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;job_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ui-pods'&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;kubernetes_sd_configs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pod&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;relabel_configs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Фильтрация. Оставляем для дальнейшей обработки (они появятся в targets) все поды, у которых есть kubernetes метка component со значением ui&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;source_labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;__meta_kubernetes_pod_label_component&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keep&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ui&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Модификация&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Переносим в target_labels все source_labels, соответствующие regex (как в примере про labelmap)&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;labelmap&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;regex&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;__meta_kubernetes_pod_label_(.+)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Переносим значения source_label в target_label для namespace и pod_name&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;source_labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;__meta_kubernetes_namespace&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;target_label&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubernetes_namespace&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;source_labels&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;__meta_kubernetes_pod_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;target_label&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubernetes_name&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;В итоге в метрики приложения на основе метаданных:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Будут перенесены все метки Kubernetes (component=”ui”)&lt;/li&gt;
+  &lt;li&gt;Добавлены метки kubernetes_name и kubernetes_namespace с соответствующими значениями.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;В итоге все метрики собираемые с приложения будут выглядеть примерно следующим образом:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ui_health{component=&quot;ui&quot;,instance=&quot;10.0.1.17:9292&quot;,job=&quot;ui-pods&quot;,kubernetes_name=&quot;ui-cd4566764-lz8n7&quot;,kubernetes_namespace=&quot;ui&quot;,pod_template_hash=&quot;780122320&quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Весь процесс схематично можно представить следующим образом:
+&lt;img src=&quot;public/prometheus-kubernetes.png&quot; alt=&quot;prometheus-kubernetes&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
