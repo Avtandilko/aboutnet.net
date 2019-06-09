@@ -1,11 +1,10 @@
 jobs:
   include:
-    - stage: build
-      script:
-      - echo "$DOCKER_PASSWORD" | docker login -u avtandilko --password-stdin
-      - docker build -t avtandilko/jekyll:$TRAVIS_BUILD_NUMBER .
-      - docker push avtandilko/jekyll:$TRAVIS_BUILD_NUMBER
+  - stage: build
+    script:
+    - echo "$DOCKER_PASSWORD" | docker login -u avtandilko --password-stdin
+    - docker build -t avtandilko/jekyll:$TRAVIS_BUILD_NUMBER .
+    - docker push avtandilko/jekyll:$TRAVIS_BUILD_NUMBER
 env:
-  matrix:
-    secure: QRPdJnv7fwScS36w4tAuLthdX6YVYK6rNsLzBICFwJf8vRchc7oJk3lRW8uMXYefrxbOD7gYLXPimd7YYzYXUDysOfA7rNne8Z3qaKL4OZ3i/SAGjg7N24x/5LCawsNXEDssXZVjfYrNhm3O6g5PFAFtmfr0MpzzdUWVhbQnl/CrKxz8FezRRij2ODqU4IcY10i2SsV4zdpy+6ajCBzmuu99Kx2NFVi+jV3L/4d0Fbx0T0RwSH5apV/WgSIqn2q4EJh6cJcBavum4upM/aJ8e3zVsh75SHQnJwktZcy3Rq8B6b6xcXt5CAmAlZpvKeyOuBH2e4ru5mcZp+JXl5cxz532XnO/TYxIsVIfeCl9Jn6rHW4l9D9Upe1ISPfqI28k6qe0rg/idTU2k7tF358hUdbocbUCVLzFOJCwMsTG1C916xTjRNEIllGlXx4wsNZZbdvKInQf+cQgS6goqiMtTW3kz7ZYQaoZ6vHlnUE/K92aBbnSQMHpw7ONk+tik5aHPn+w7udMssoh2qCB63Z3T2JlPTDQoZIbQh2dFAVimCDa1iKOUEAIDqswbRItqhfaNWoH12BjNrLydBKtenLWCMRSNkg8CBukEtBb/1R8Cbmr1agzV2VhE9Tuh1sh2iLwcERSJBOk5vaeNcNXUtN+3R83he0HOIEnftFtb6TKGKc=
-
+  global:
+    secure: A69TPLyNzpQEY2zPWE9XGlKMiHDPoRqHaWLpoLG2fG7TQwnl+OdT81opDbnVTQluAR0ex6K3uNLdlPMN6d7FMCvM2ZN6kx+5+0e8X1T7jlqTc0EXKj3BszgRAehT8OR4ts93NGbH0x8ua9QJQ9iOLqBQE5cSyA8vU/h+YME7oME8b3zrAeAAwIwLgT30lhKqn3NztLVpGTN1GgZi18+Sue2zkb5rLOz7ucpP+pexBX+j+Puy9BZC2IKiigygCwPjpCrrzXQCuiWM4JWinJDeGOX6J3cQ02GoTz+SzNJqohMp92v9BbTeyXP0hUhGk4hAKowGAm+7CVo1TQniicTOeW5yuS4roC6cHkgMXAGgLQbusDC/rojOtyCnd1cEWra/0wugl4JcBJRdCr3ev1ycuZSWAwMmvhXJeDPOO53VKK+45jUoZL0Ijr/AtULM0d5Uns3dQYBaHrhQH/QFLWEWVsHjcgCnAhPtPXOQQQFs7k7rdujjHMtce1FDJY7aw21vLEjOU8p4RxWH4xxi4FKOEmDvytbBSncnhO+Ciws+EnVmh29+dogtjsodFk6tUNjsSCSsjtuTpO+IXkjwlk1ePlC1hhPGaIErF/S9S//Z6rjYb53TWUmIpA0ekp5NRPf9a3IUxhL7C5ZGH5kcOxd3/kfPoyFwLidQ+m9pbZ6gQZs=
