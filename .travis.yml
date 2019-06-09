@@ -5,6 +5,17 @@ jobs:
     - echo "$DOCKER_PASSWORD" | docker login -u avtandilko --password-stdin
     - docker build -t avtandilko/jekyll:$TRAVIS_BUILD_NUMBER .
     - docker push avtandilko/jekyll:$TRAVIS_BUILD_NUMBER
+
+  - stage: deploy
+    script:
+    - ssh velgin@aboutnet.net -i id_rsa
+    - docker ps 
 env:
   global:
     secure: bwBPPqr1NQSBUlMdH420qfXWH+S2S1FJ29QTRkIbM6jWkypsOlg4f/9uRmhrGHJ2s4gccw7HjaAvQry9faHJQ5Lt8FEDIrEXZ8KDce85wDG1DYw+hDc4eRjTEIGx60ekSNc0aQrsml+FeEH83sAogAGl06AKamvOp5lPZsV/ec7p0ZmqkIewIOxfl11FZP2VnAkClGVDHSFCZ911Wk3HCsouAlHelzNBeUnlGMQYzEbgUebn4+SXxYHbQVSn6b0NpZRWrx5QU1scxjf8fw1w8zsFE1zaH34KQxGvPHTPJmbs1eGjFj+8hvUCbLUPhIrn8iOJnNJNohKAcdvJPVx+yPMJ4LR6n6fmPhYEIZ3m/31Wbsxin3I4BhDTy+P2NL1vIkOwiFZl7P9wrM8HmPZp0wCuWdI5TSzo2D3ZFawfWY7/jU4SQsec+i2G5EBx+umh4G+BhwDlD2vLDyb2qqMwIP3u4bPjXIvuJqwQpcDPakwoxzW7ZV3mPX0ClrCeERoDaP6DvQCizGixBkNtv38R0Q8iJejmuOjtRjOs4CyKLrO7u0YlRCr4ABWbxFh7q6SdHnrPKrZL4aou8wWC1RvIWhVtjZDVYmt5PctKKLPN6Bb6xOSaCTUnS6JFOoEvOas5/uWTemyPzsudsGj3PVkz4j8eV7GFe3oFAw/t/dwPi6c=
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_39539e606023_key -iv $encrypted_39539e606023_iv -in id_rsa.enc -out id_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 id_rsa
+  - ssh-add id_rsa
