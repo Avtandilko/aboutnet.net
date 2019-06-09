@@ -8,7 +8,7 @@ jobs:
 
   - stage: deploy
     script:
-    - ssh velgin@aboutnet.net -i id_rsa
+    - ssh -o StrictHostKeyChecking=no velgin@aboutnet.net -i id_rsa
     - docker ps 
 env:
   global:
