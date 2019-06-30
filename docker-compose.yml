@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v1.7.12-alpine
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik/traefik.toml:/traefik.toml
+      - $PWD/traefik/acme.json:/acme.json
+  jekyll:
+    image: jekyll
+    container_name: jekyll
+    expose:
+      - "4000"
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:aboutnet.net

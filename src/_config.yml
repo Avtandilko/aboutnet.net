@@ -1,0 +1,19 @@
+# Dependencies
+markdown:         kramdown
+highlighters:     true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            AboutNet
+tagline:          'all about networks'
+
+paginate:         5
+
+url: https://aboutnet.net
+host: 0.0.0.0
+
+plugins: 
+  - jekyll-paginate
+  - jekyll-read-more

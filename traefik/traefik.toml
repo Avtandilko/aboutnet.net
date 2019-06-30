@@ -1,0 +1,27 @@
+debug = false
+defaultEntryPoints = ["http", "https"]
+
+[accessLog]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[api]
+
+[acme]
+email = "nikita@velg.in"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = "http"
+
+[docker]
+domain = "aboutnet.net"
+watch = true
