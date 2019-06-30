@@ -12,7 +12,7 @@ services:
       - $PWD/traefik/traefik.toml:/traefik.toml
       - $PWD/traefik/acme.json:/acme.json
   jekyll:
-    image: jekyll
+    build: ./
     container_name: jekyll
     expose:
       - "4000"
