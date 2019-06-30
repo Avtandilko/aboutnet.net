@@ -1,5 +1,6 @@
 ---
 layout: post
+author: nikita_velgin
 title: Prometheus and Kubernetes
 categories: Containers
 subcategories: Kubernetes
